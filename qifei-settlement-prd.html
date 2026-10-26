@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>祈飞财务结算 · PRD · 祈飞财务结算 PRD</title>
+<style>
+:root{--blue:#2878ff;--ink:#1f2937;--muted:#7d8797;--line:#e5e9f0;--bg:#f5f7fa}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);background:var(--bg);line-height:1.75}
+.topbar{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:12px 22px}
+.topbar .brand{display:inline-flex;width:30px;height:30px;border-radius:8px;background:var(--blue);color:#fff;font-weight:700;align-items:center;justify-content:center;font-size:15px}
+.topbar .t{font-size:15px;font-weight:700}
+.topbar .back{margin-left:auto;text-decoration:none;color:var(--blue);font-size:13px;font-weight:600;border:1px solid #cfe0ff;border-radius:7px;padding:5px 12px;background:#f3f8ff}
+.topbar .back:hover{background:#e8f1ff}
+.doc{max-width:880px;margin:28px auto 80px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:40px 48px 56px;box-shadow:0 1px 3px rgba(20,40,80,.04)}
+.doc h1{font-size:27px;margin:0 0 6px;padding-bottom:16px;border-bottom:2px solid var(--line)}
+.doc h2{font-size:21px;margin:38px 0 12px;padding-left:11px;border-left:4px solid var(--blue)}
+.doc h3{font-size:17px;margin:26px 0 10px;color:#23304a}
+.doc p{margin:12px 0}
+.doc a{color:var(--blue);text-decoration:none}
+.doc a:hover{text-decoration:underline}
+.doc ul,.doc ol{padding-left:22px;margin:12px 0}
+.doc li{margin:6px 0}
+.doc blockquote{margin:16px 0;padding:12px 18px;background:#f3f8ff;border-left:4px solid var(--blue);border-radius:8px;color:#3a4a63;font-size:14px}
+.doc blockquote p{margin:4px 0}
+.doc code{background:#f1f3f7;border-radius:5px;padding:2px 6px;font-size:13px;font-family:SFMono-Regular,Consolas,Menlo,monospace;color:#c0392b}
+.doc pre{background:#0f1729;color:#e6edf3;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;line-height:1.6}
+.doc pre code{background:none;color:inherit;padding:0}
+.doc table{border-collapse:collapse;width:100%;margin:18px 0;font-size:13.5px}
+.doc th,.doc td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+.doc thead th{background:#f3f6fb;font-weight:700;color:#23304a}
+.doc tbody tr:nth-child(even){background:#fafbfd}
+.doc hr{border:none;border-top:1px solid var(--line);margin:30px 0}
+.doc strong{color:#15233b}
+.tag{display:inline-block;background:#eaf2ff;color:var(--blue);border-radius:4px;padding:0 6px;font-size:12px;font-weight:600}
+@media(max-width:640px){.doc{padding:24px 18px 40px;border-radius:0;border-left:none;border-right:none}.doc h1{font-size:23px}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span class="brand">汇</span>
+  <span class="t">祈飞财务结算 · 需求文档 PRD</span>
+  <a class="back" href="./index.html">← 返回预览首页</a>
+</div>
+<article class="doc">
+<h1 id="prd">祈飞财务结算 · PRD</h1>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>产品名称</td>
+<td>商业结算平台 - 祈飞财务结算</td>
+</tr>
+<tr>
+<td>文档版本</td>
+<td><strong>v1.0</strong>（对外交付基线；对应原型内部迭代 v1.28.4）</td>
+</tr>
+<tr>
+<td>版本状态</td>
+<td><strong>首个可交付基线 v1.0（2026-10-23）</strong>；内部原型迭代已推进至 v1.28.4，对外统一以 v1.0 作为交付版本号</td>
+</tr>
+<tr>
+<td>最后更新</td>
+<td>2026-10-23</td>
+</tr>
+<tr>
+<td>关联原型</td>
+<td><code>qifei-settlement-demo.html</code>（同目录，单文件可交互原型）</td>
+</tr>
+<tr>
+<td>需求范围</td>
+<td>① 祈飞结算商品维护 ② 祈飞达播结算维护</td>
+</tr>
+<tr>
+<td>不在本期范围</td>
+<td>店铺档案仅实现「店铺信息 + 达人结算范围」，其余字段待补；特殊品牌结算菜单已开放，页面内容待补充（当前为占位页）</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>说明：本文档与原型保持同步维护。原型上任何一次交互/字段调整，都应在本文件对应章节增量更新，并在文末「变更记录」追加一行。</p>
+</blockquote>
+<hr />
+<h2 id="1">1. 背景与目标</h2>
+<p>祈飞业务的结算分两条链路：</p>
+<ul>
+<li><strong>商品维度</strong>：财务维护一批「参与祈飞结算」的商品，并给每个商品设定结算有效期，订单创建时间落在有效期内才参与结算。</li>
+<li><strong>达人维度</strong>：祈飞作为货主去找达人带货（达播），需要按「达人 × 商品」维护带货关系与佣金率，同样受结算有效期约束。</li>
+</ul>
+<p>目标：让财务在一个后台里完成上述两类结算对象的建档、有效期管理与终止，减少线下表格维护带来的错漏。</p>
+<hr />
+<h2 id="2">2. 术语</h2>
+<table>
+<thead>
+<tr>
+<th>术语</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>祈飞结算商品</td>
+<td>参与祈飞结算的商品，按商品 ID 建档</td>
+</tr>
+<tr>
+<td>结算有效期</td>
+<td>结算开始时间 ~ 结算结束时间，订单创建时间须落在区间内</td>
+</tr>
+<tr>
+<td>订单创建时间</td>
+<td>用户下单的时点，<strong>与支付时间是两个概念</strong>；结算有效期以创建时间为判定口径</td>
+</tr>
+<tr>
+<td>结束结算</td>
+<td>手动把结算结束时间提前到指定日期，使商品/达人合作提前失效</td>
+</tr>
+<tr>
+<td>达播</td>
+<td>达人直播带货，祈飞找达人合作</td>
+</tr>
+<tr>
+<td>佣金率</td>
+<td>结算中按比例计算的分成比例，单位 %。<strong>商品维护菜单</strong>与<strong>达播菜单</strong>统一称「佣金率」（v1.4 曾改称「佣金服务费」，<strong>v1.18.0 起全面回归「佣金率」</strong>，两菜单用词一致）</td>
+</tr>
+<tr>
+<td>渠道（流量体裁）</td>
+<td>抖店订单的「流量体裁」字段，决定该笔订单按哪个渠道费率结算。本期固定 <strong>5 个渠道</strong>，展示顺序固定为：<strong>直播（默认）、短视频、商品卡、推荐卡、其他</strong>（v1.22.0 新增后 3 个）。抖店后续新增的体裁未及时同步时，<strong>默认按「直播（默认）」佣金率结算</strong>——这也是「直播」改名为「直播（默认）」的原因</td>
+</tr>
+<tr>
+<td>带货范围（达播）</td>
+<td>达人与店铺商品的结算范围，二选一（v1.23.0）：<strong>指定商品</strong>——仅清单内商品按各自佣金率结算（原有模型）；<strong>全店商品</strong>——全部商品按「达人佣金率」结算，清单内指定商品可单独设费率覆盖通用值。达播侧佣金率为<strong>单个数值</strong>，不按渠道拆分</td>
+</tr>
+<tr>
+<td>参与计算范围（达播）→ 达人结算范围</td>
+<td>店铺级设置（v1.23.0 引入，v1.24.0 改名并重做，<strong>v1.25.0 起改在「店铺档案」菜单中配置，达播页只读查看</strong>）：<strong>全部达人结算</strong>（默认，列表只放指定佣金率的达人/商品，其余按达人通用佣金率结算）/ <strong>指定达人结算</strong>（只有列表内达人/商品结算，其他不结算，不展示通用佣金率）/ <strong>指定达人不结算，其余结算</strong>（列表拆成「指定佣金结算」「不结算达人」两个页签两张表）。v1.23.0 的「指定达人名单 chips」「灰显 + 不参与计算标签」做法已废弃</td>
+</tr>
+<tr>
+<td>达人通用佣金率</td>
+<td>达播侧店铺级<strong>单个数值</strong>（不按渠道拆分，v1.24.0）：未配置指定佣金率的达人和商品按此值<strong>保底结算</strong>；仅在「全部达人结算」「指定达人不结算，其余结算」两种模式下展示；支持生效日期 + 历史变更记录（交互与商品维护的通用佣金率一致）</td>
+</tr>
+<tr>
+<td>店铺档案</td>
+<td>财务维护店铺信息的模块（<strong>v1.25.0 落地部分能力</strong>：店铺信息 + <strong>达人结算范围</strong>设置；其余店铺字段与佣金率默认值能力待补）。路由 <code>#store</code>，达播页的「达人结算范围」在此设置</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3">3. 信息架构</h2>
+<p>左侧导航（分组：财务）：</p>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>菜单</th>
+<th>状态</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>祈飞结算商品维护</td>
+<td>已实现</td>
+<td>默认页，路由 <code>#product</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>祈飞达播结算维护</td>
+<td>已实现</td>
+<td>路由 <code>#daboo</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td>特殊品牌结算</td>
+<td>已开放（页面待补充）</td>
+<td>路由 <code>#brand</code>，可点击；当前为「功能建设中，敬请期待」占位页，业务规则与字段待补充</td>
+</tr>
+<tr>
+<td>4</td>
+<td>店铺档案</td>
+<td><strong>已实现（部分）</strong></td>
+<td>路由 <code>#store</code>，可点击（v1.25.0 起取消置灰与「待开发」角标）；本期实现「店铺信息 + 达人结算范围」，见第 6 节</td>
+</tr>
+</tbody>
+</table>
+<p>规则：</p>
+<ul>
+<li>当前选中菜单高亮（浅蓝底 + 蓝字），面包屑同步显示菜单名。</li>
+<li>支持 URL hash 直接进入（<code>#product</code> / <code>#daboo</code> / <code>#brand</code> / <code>#store</code>），非法 hash 回落到商品维护页。</li>
+<li>移动端（&lt;760px）隐藏侧边栏。</li>
+</ul>
+<hr />
+<h2 id="4">4. 祈飞结算商品维护</h2>
+<h3 id="41">4.1 通用佣金率</h3>
+<p>页面顶部卡片「通用佣金率」，<strong>只做展示，不直接放输入框</strong>（编辑交互与全站统一：展示态 + 弹窗编辑）：</p>
+<table>
+<thead>
+<tr>
+<th>元素</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>展示内容</td>
+<td><code>直播（默认） 20%</code>　<code>短视频 20%</code>　<code>商品卡 20%</code>　<code>推荐卡 20%</code>　<code>其他 20%</code>（v1.22.0 起 <strong>5 个渠道并列</strong>，顺序固定为 直播（默认）→ 短视频 → 商品卡 → 推荐卡 → 其他；展示<strong>所选结算时间段内</strong>的通用费率，随顶部「结算时间段」联动）——区间内只有一种费率时直显（如 <code>20%</code>），跨越费率变更时显示区间（如 <code>18%～20%</code>）；无生效记录时取该时段起点的通用率；右侧仅一个蓝色文字按钮「历史变更记录」（字号 <strong>12px</strong>，v1.22.3 由继承的 16px 缩小至与渠道值同级偏小，视觉上不再抢过数值）</td>
+</tr>
+<tr>
+<td>说明文案</td>
+<td>单条合并说明（v1.22.1）：「未配置指定结算规则的商品按通用佣金率结算。渠道对应抖店订单的「流量体裁」字段，其他未支持设置的流量体裁按「直播（默认）」佣金率结算。」（v1.22.0 前为两条独立 tip：第一条 v1.18.0 精简为「未配置指定佣金规则的商品范围，按通用佣金率结算」，第二条为渠道/流量体裁说明，v1.22.1 起合并为一条）</td>
+</tr>
+<tr>
+<td>变更记录入口</td>
+<td>点「历史变更记录」打开弹窗「通用佣金率历史变更记录」，表格列出历次变更（按生效日期倒序）；编辑入口内置于该弹窗底部</td>
+</tr>
+</tbody>
+</table>
+<p><strong>弹窗「通用佣金率历史变更记录」</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>元素</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>历史表格</td>
+<td>列出历次变更记录（生效日期 / <strong>直播（默认） / 短视频 / 商品卡 / 推荐卡 / 其他</strong> / 更新信息，共 7 列，按生效日期倒序）；更新信息列上行更新人、下行更新时间（与列表「更新信息」列样式统一）</td>
+</tr>
+<tr>
+<td>变更按钮</td>
+<td>弹窗<strong>底部、位于「关闭」左侧</strong>的「<strong>新增变更</strong>」按钮（v1.18.0 由「变更通用佣金率」改名），点击后<strong>关闭本弹窗并打开独立弹窗「变更通用佣金率」</strong></td>
+</tr>
+<tr>
+<td>编辑弹窗字段</td>
+<td>生效日期（默认今天）+ <strong>5 个渠道费率</strong>（直播（默认）/ 短视频 / 商品卡 / 推荐卡 / 其他，均默认带出当前通用值，按上述顺序两列换行排布）；取消即退回历史变更记录弹窗</td>
+</tr>
+<tr>
+<td>校验</td>
+<td>生效日期留空 → 「请填写生效日期」；任一渠道越界 → 「<strong>{渠道名}佣金率需在 0-100 之间</strong>」（如「短视频佣金率需在 0-100 之间」）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>截断语义（本次修改 = 修改「生效日期至今」的通用佣金率）</strong>：保存新记录时，先删除<strong>所有生效日期 ≥ 新生效日期</strong>的既有记录，再追加新记录，按生效日期升序排列——即新记录「接管」其生效日期起的所有后续区间。</p>
+<ul>
+<li>例：已有 10-01（20%）、10-05（22%）两条，此时新增 10-03（21%）→ 删除 10-05，最终记录链为 10-01、10-03；10-03 起（含 10-03）按 21% 结算。</li>
+</ul>
+<p>保存后<strong>编辑弹窗关闭、历史变更记录弹窗重新打开</strong>并刷新表格、卡片即时刷新（展示最新生效的费率），toast「通用佣金率已保存」。关闭方式：各弹窗右上 ×、按钮、点遮罩。</p>
+<p><strong>通用佣金率随时间变化</strong>：按「生效日期」形成记录链——某一天生效的通用费率 = 「生效日期 ≤ 该天」且生效日期最新的一条记录；商品渠道留空时，取该订单结算时间点对应的通用费率。</p>
+<p><strong>兜底规则</strong>：商品的某个渠道没有配置指定规则时，按该渠道的通用佣金率结算。</p>
+<blockquote>
+<p>说明：原「祈飞结算商品范围（全店商品 / 指定商品）」开关已移除。在新模型下「未配置规则的商品 = 按通用佣金率结算」，与「全店商品」语义完全重叠，保留反而会出现"切到全店后商品列表被隐藏、规则无处维护"的死角。</p>
+</blockquote>
+<h3 id="42">4.2 佣金规则模型（核心）</h3>
+<p><strong>一条「结算规则」= 一个结算时间段 + 该时段内的 5 个渠道费率</strong>（v1.22.0：渠道为 直播（默认）/ 短视频 / 商品卡 / 推荐卡 / 其他，仍是一条规则带多个渠道，<strong>不按渠道拆成多条</strong>）。</p>
+<p><strong>结算类型</strong>（弹窗内单选切换，二选一）：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>字段</th>
+<th>结算行为</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>指定佣金结算（默认）</td>
+<td>结算时间 + 5 个渠道费率（直播（默认）/ 短视频 / 商品卡 / 推荐卡 / 其他）</td>
+<td>按费率结算</td>
+</tr>
+<tr>
+<td><strong>不参与结算（剔除）</strong></td>
+<td>只填结算时间（留空 = 长期剔除）</td>
+<td>命中即<strong>不结算</strong>，不再往下匹配；费率字段隐藏</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>要素</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>结算时间</td>
+<td>开始时间（必填）～ 结束时间（留空 = 长期），两种类型都填</td>
+</tr>
+<tr>
+<td>直播（默认）佣金率</td>
+<td>可编辑，<strong>默认带出该渠道通用佣金率</strong>；留空 = 按通用佣金率结算（仅「指定佣金结算」类型）</td>
+</tr>
+<tr>
+<td>短视频 / 商品卡 / 推荐卡 / 其他佣金率</td>
+<td>同上，<strong>每个渠道各自独立</strong>，留空各自取通用值（仅「指定佣金结算」类型）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>剔除粒度 = 整个商品</strong>：命中剔除规则时，该商品<strong>全部 5 个渠道</strong>的订单都不参与结算（不支持只剔单个渠道）。</p>
+<p>规则约束：</p>
+<ol>
+<li><strong>唯一性</strong>：同一商品同一结算时间段内<strong>只允许一条规则</strong>（时间段重叠即冲突，保存时拦截「该商品在该时间段内已存在结算规则」）。</li>
+<li><strong>与通用一致不新增</strong>：保存时若<strong>5 个渠道费率全部</strong>与各自通用佣金率一致（或都留空），直接提醒「<strong>该规则的佣金率与通用佣金率一致，无需单独指定</strong>」，<strong>不新增 / 不保存</strong>该条规则。</li>
+<li><strong>留空 = 按通用佣金率结算</strong>（不是"不结算"）。</li>
+</ol>
+<p>匹配与结算（<strong>命中即止，逐层降级</strong>）：</p>
+<ol>
+<li>订单创建时间落在某条<strong>不参与结算</strong>规则的结算时间段内 → <strong>不结算</strong>（优先级最高）。</li>
+<li>落在某条<strong>指定佣金结算</strong>规则内 → 按该规则的渠道费率结算；该渠道留空则取通用佣金率。</li>
+<li>未落在任何规则内 → 按通用佣金率结算。</li>
+<li>规则被修改（费率 / 时间段 / 结束结算）后，<strong>对该规则影响时间范围内的订单重新计算</strong>。</li>
+</ol>
+<p>规则状态（按「今天」判定）：</p>
+<table>
+<thead>
+<tr>
+<th>状态</th>
+<th>判定</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>待开始</td>
+<td>今天 &lt; 结算开始时间</td>
+</tr>
+<tr>
+<td>生效中</td>
+<td>结算开始时间 ≤ 今天 ≤ 结算结束时间（结束为空视为长期）</td>
+</tr>
+<tr>
+<td>已结束</td>
+<td>今天 &gt; 结算结束时间</td>
+</tr>
+</tbody>
+</table>
+<h3 id="43">4.3 列表</h3>
+<p><strong>查询区</strong>（顶部工具条：结算时间段 + 商品搜索一并上移，<strong>不再提供状态筛选</strong>）</p>
+<blockquote>
+<p><strong>查询区排版规范（两个菜单统一，v1.21.0）</strong>：所有筛选项遵循同一套尺寸——标签 <code>.flabel</code> 13px / <code>#5b6675</code>，控件高度 <strong>36px</strong>、圆角 <strong>6px</strong>、左右内边距 <strong>11px</strong>、字号 <strong>13px</strong>（输入框、下拉、按钮、日期触发器一致，与标签字号对齐）；不同筛选分组之间插 <strong>1px 竖分隔线</strong>（<code>.fdiv</code>，18px 高、上下自动居中）；关键词输入框统一 <strong>232px</strong> 宽（达播页「达人」框 216px），有值时右侧显示「<strong>×</strong>」一键清空；主操作按钮固定在同一行最右。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>控件</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>结算时间段</td>
+<td><strong>组合日期选择器</strong>（v1.18.0 新交互，替代原两个并排的独立日期框）：视口为一个<strong>触发器按钮</strong>——左侧日历图标 + 当前范围文本 <code>2026.10.01 ～ 2026.10.31</code> + 右侧下拉箭头，点击后就地展开<strong>浮层</strong>选择范围，<br />① <strong>快捷预设</strong>（胶囊按钮）：本月 / 上月 / 近7天 / 近30天 / 今年，点选即回填下方两个日期框（选中态高亮蓝框）；<br />② <strong>起止日期</strong>：一个浮层内并排两个 <code>date</code> 输入 + 中间「～」，无需分别打开；<br />③ <strong>确定 / 取消</strong>：确定才写回并触发查询（重置到第 1 页、列表与「通用佣金率」卡片同步刷新），取消则丢弃本次改动；点浮层外区域或按 <code>Esc</code> 也可关闭。<br />列表展示「结算时间与该范围有交集」的规则数据；开始留空视为最早、结束留空视为最晚（<strong>默认当前月</strong>：开始 = 当月 1 日、结束 = 当月最后一日，如 2026-10 显示 <code>2026.10.01 ～ 2026.10.31</code>）</td>
+</tr>
+<tr>
+<td>输入框</td>
+<td>占位「请输入商品 ID / 商品名称」，商品 ID 与名称模糊匹配，不区分大小写</td>
+</tr>
+<tr>
+<td>查询按钮</td>
+<td>触发查询并重置到第 1 页</td>
+</tr>
+<tr>
+<td>批量导入</td>
+<td>打开批量导入弹窗</td>
+</tr>
+<tr>
+<td>＋ 新增商品</td>
+<td>主按钮，打开新增商品弹窗</td>
+</tr>
+</tbody>
+</table>
+<p><strong>表格字段</strong>（一行 = 一个商品；同一商品在所选时间段内的全部历史规则，通过「展开」按钮查看）</p>
+<table>
+<thead>
+<tr>
+<th>列</th>
+<th>内容</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>展开</td>
+<td>每行首列 44px 三角按钮，点开/收起该商品的「历史结算记录」子表</td>
+<td>图标随展开旋转（<code>.exp.open</code>）；展开状态由 <code>pExpanded</code> 记忆</td>
+</tr>
+<tr>
+<td>商品信息</td>
+<td>商品图 + 商品名称 + <code>商品 ID：xxx [复制]</code> + <code>上架时间：YYYY.MM.DD</code></td>
+<td>单列合并展示，商品图 58×58</td>
+</tr>
+<tr>
+<td>结算类型</td>
+<td>标签：<code>通用佣金结算</code>（青）/ <code>指定佣金结算</code>（蓝）/ <code>不参与结算</code>（灰），取该商品在所选时间段内的<strong>全部结算类型</strong>并列展示；时间段内存在未被规则覆盖的空隙期间 → 追加「通用佣金结算」标签</td>
+<td>v1.10.0 起聚合展示</td>
+</tr>
+<tr>
+<td>佣金率</td>
+<td><strong>按 5 个渠道分别展示</strong>（直播（默认）/ 短视频 / 商品卡 / 推荐卡 / 其他，顺序固定）；每渠道展示所选时间段内出现过的<strong>全部费率</strong>：未被规则覆盖的期间取通用佣金率、各指定规则取规则费率（留空取规则生效日通用值）、<strong>剔除规则按 <code>0%</code> 计入</strong>；同渠道单值直显 <code>20%</code>，多值显区间 <code>20%～25%</code>（升序，含剔除时下界为 <code>0%</code>）；全部为剔除规则 → <code>0%</code></td>
+<td>v1.14.0 起剔除规则 0% 计入区间</td>
+</tr>
+<tr>
+<td>更新信息</td>
+<td>两行：上行 <code>更新人</code>（12px）、下行 <code>更新时间</code>（<code>YYYY.MM.DD HH:mm</code>，11px 灰色）</td>
+<td>商品维护与达播两个结算页面统一</td>
+</tr>
+<tr>
+<td>操作</td>
+<td><code>新增结算规则</code>（每行都显示）；展开子表内仅 <code>编辑</code>（v1.13.0 起移除「结束结算」）</td>
+<td>新增打开对应弹窗</td>
+</tr>
+</tbody>
+</table>
+<p><strong>展开子表（历史结算记录）</strong>：点开 44px 展开按钮后，在该行下方展开一张 <strong>8 列</strong>子表（v1.22.0 由 5 列扩为 8 列），列出<strong>该商品全部历史结算规则</strong>（按结算时间倒序），<strong>不受顶部「结算时间段」筛选影响</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>子表列</th>
+<th>内容</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>结算时间</td>
+<td><code>2026.09.10～2026.10.10</code>（长期则 <code>～永久</code>）</td>
+<td>倒序排列</td>
+</tr>
+<tr>
+<td>直播（默认）</td>
+<td>具体百分比；留空取规则生效日通用费率；剔除规则 → <code>0%</code>（不参与结算，佣金率为 0）</td>
+<td>灰色数字表示取通用值；表头只写渠道名（v1.22.3 去掉「佣金率」，与弹窗标签一致）</td>
+</tr>
+<tr>
+<td>短视频 / 商品卡 / 推荐卡 / 其他</td>
+<td>同上，各渠道独立取值</td>
+<td>同上</td>
+</tr>
+<tr>
+<td>状态</td>
+<td><code>待开始</code> / <code>生效中</code> / <code>已结束</code>（<code>.tag</code>），剔除规则额外带 <code>不参与结算</code> 灰标签</td>
+<td><code>ruleStatus()</code></td>
+</tr>
+<tr>
+<td>操作</td>
+<td>仅 <code>编辑</code>（v1.13.0 起<strong>移除「结束结算」</strong>，商品维护页只保留编辑）</td>
+<td>与列表操作一致</td>
+</tr>
+</tbody>
+</table>
+<p><strong>筛选与展示规则（核心）</strong>：</p>
+<ul>
+<li><strong>商品级列表 + 展开查看历史</strong>：主列表逐商品展示一行（一行 = 一个商品），凡该商品在所选时间段内<strong>有任意一条</strong>结算规则与时间段 <code>[开始, 结束]</code> 有交集（<code>规则开始 ≤ 结束</code> 且 <code>规则结束 ≥ 开始</code>，长期视为无限）即展示；展开后子表列出该商品<strong>全部历史规则</strong>（不受时间段筛选约束），便于回看任意历史时段的明细。</li>
+<li><strong>通用 + 指定聚合展示（核心）</strong>：商品在所选时间段内「部分期间按通用、部分期间按指定规则」时，主行<strong>同时展示两种结算类型与费率区间</strong>——例：查询 10.01～10.31，商品仅有 10.08～10.31 指定规则（直播 25%）→ 类型为「通用佣金结算 + 指定佣金结算」、直播（默认）<code>20%～25%</code>（10.01～10.07 通用 20% + 规则 25%）；<strong>5 个渠道各自独立成区间</strong>（v1.22.0），如 <code>直播（默认） 20%～25% / 短视频 15%～20% / 商品卡 20% / 推荐卡 20% / 其他 20%</code>，单元格内以「渠道名 值」片段呈现、按渠道整体换行（<code>.chn</code> 为 inline-block，不会在渠道中间断行）；<strong>若同时含剔除（不参与结算）规则，剔除按 0% 计入区间</strong>（如 15% / 20% / 剔除 0% → <code>0%～20%</code>）；空隙期间的计算：规则覆盖段合并后，与查询范围求差集即通用期间，其费率按期间首日取通用佣金率。</li>
+<li><strong>主行不展示结算时间（v1.11.0）</strong>：商品的结算时间段不在主行展示，避免与「按时间段聚合」语义混淆；具体每条规则的结算时间在展开子表内查看。</li>
+<li><strong>仅通用不展示</strong>：若某商品在所选时间段内<strong>全部期间</strong>都只按通用佣金率结算（无任何指定/剔除规则命中），则该商品在列表中<strong>不展示</strong>。</li>
+<li>排序：整体按<strong>更新时间倒序</strong>，同一商品内按<strong>规则开始时间倒序</strong>（新规则在上）。</li>
+</ul>
+<p><strong>排版</strong>：列表单元格文本统一为 12px 常规字重，<code>佣金率</code>、<code>更新信息</code> 完全一致，<strong>不做加粗/放大</strong>（数值靠「结算类型」标签与颜色区分，不靠字重）；<code>更新信息</code> 为两行（上行更新人 12px、下行更新时间 11px 灰色）。单元格水平内边距统一 <strong>12px</strong>（v1.14.0 由 9px 加宽，改善字段列间隙）。商品维护列表为 <strong>6 列</strong>，列宽由 <code>layoutMain()</code> 按容器宽度精确计算（v1.15.0）：展开 44px / 商品信息 28%（最小 270px）/ 结算类型 24% / 佣金率 21% / 更新信息 12% / 操作 15%（<code>rest = 表宽 − 44px</code>，操作列至少 140px）。v1.22.0 起「佣金率」列允许换行（5 个渠道内容变长），按渠道片段换行，行高随内容自适应。</p>
+<p><strong>操作列对齐（v1.15.0）</strong>：主行与展开子表的操作列均<strong>左对齐</strong>（v1.14.0 曾右对齐），操作文字从操作列左缘开始、右侧留白（1360 实测「新增结算规则」距表格右缘约 43px，不贴右边），主行「新增结算规则」与子表「编辑」左缘严格对齐（偏差 0px）。</p>
+<p><strong>子表列对齐（v1.14.0，v1.22.0 扩为 8 列）</strong>：<code>alignSub()</code> 除将 <code>.subwrap</code> 左缘对齐「商品信息」列、右缘对齐「操作」列外，还按主行真实列边界<strong>动态设定子表 8 列宽度</strong>——前 6 列（结算时间 22% + 5 个渠道列均分余量）合计对齐到「更新信息」列左缘，<strong>状态列宽 = 更新信息列宽</strong>、<strong>操作列宽 = 操作列宽</strong>，使「状态」与「更新信息」、「操作」与「操作」上下对齐（因表格边框取整有 1~2px 误差，<code>draw()</code> 末尾以 <code>setTimeout(30)</code> 再跑一次 <code>alignSub()</code>，并可用左内边距微调；1360 窗口实测文字偏差 ≤0.5px、操作按钮右缘偏差 0px）。达播列表仍为 8 列，两页在更新信息、字号（12px）与数字列字重（400 常规）上保持一致。</p>
+<blockquote>
+<p>说明：v1.9.0 将 v1.7.0 起的「规则级平铺」<strong>回退为商品级列表 + 展开子表</strong>（即 v1.6.0 形态）：主列表一行一个商品，点开 44px 按钮在下方展开该商品全部历史结算记录，通过 <code>结算时间段</code> 筛选控制主列表可见商品、子表则始终展示完整历史。</p>
+<p>说明：v1.10.0 起主行「结算类型 / 佣金率 / 结算时间」三个字段改为<strong>按所选时间段聚合展示</strong>：通用期间与各指定规则期间的数据合并呈现，不再只取开始时间最新的一条规则。v1.11.0 起主行<strong>去掉「结算时间」列</strong>（6 列），结算时间仅在展开子表内按规则查看。</p>
+</blockquote>
+<p><strong>其他</strong></p>
+<ul>
+<li>空态：无匹配数据时表格下方展示「该时间段内没有符合条件的商品结算规则」。</li>
+<li>左下展示「共 N 条」。</li>
+<li>分页：<strong>每页 20 条</strong>；页码超 7 页折叠为 <code>1 … 5 6 7 … 20</code> 形式；首页/末页时「上一页/下一页」置灰；右下展示「共 X 页 · 每页 20 条」；翻页后滚动回顶部。</li>
+</ul>
+<h3 id="44">4.4 新增商品</h3>
+<p>弹窗「新增商品」：<strong>一次填写 = 一条结算规则</strong>（结算时间在佣金率之上填写）。</p>
+<table>
+<thead>
+<tr>
+<th>顺序</th>
+<th>字段</th>
+<th>必填</th>
+<th>交互与校验</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>商品</td>
+<td>是</td>
+<td>输入平台商品 ID（支持按 ID 或名称模糊搜索）→ 搜索结果卡片 + <code>选择</code> 按钮；未命中提示「未找到匹配商品，请检查商品 ID」</td>
+</tr>
+<tr>
+<td>2</td>
+<td>（已选商品卡）</td>
+<td>—</td>
+<td>搜索行收起，弹窗最上方展示商品信息卡：商品图、名称、<code>商品 ID：xxx [复制]</code>、<code>上架时间：YYYY.MM.DD</code>、<code>重新选择</code>；<strong>上架时间只在卡片内展示一次，不再单独设字段</strong></td>
+</tr>
+<tr>
+<td>2.5</td>
+<td>结算类型</td>
+<td>是</td>
+<td><strong>单选</strong>：默认「指定佣金结算」；选「不参与结算」时隐藏两个费率字段，只填结算时间</td>
+</tr>
+<tr>
+<td>3</td>
+<td>结算时间</td>
+<td>开始必填</td>
+<td>一行内并排两个日期控件：<code>开始 ～ 结束</code>（中间用「～」分隔）；开始默认值 = max(店铺开播日 2026-10-01, 商品上架时间)；<strong>结束日期框内提示「不填视为长期有效」</strong>（不再在输入框右侧单独放灰字说明），留空 = 长期，不可早于开始</td>
+</tr>
+<tr>
+<td>4</td>
+<td>直播（默认）佣金率</td>
+<td>否</td>
+<td><strong>默认带出该渠道通用佣金率</strong>，可编辑；留空 = 按通用佣金率结算；0–100</td>
+</tr>
+<tr>
+<td>5</td>
+<td>短视频佣金率</td>
+<td>否</td>
+<td>同上（v1.22.0 新增）</td>
+</tr>
+<tr>
+<td>6</td>
+<td>商品卡佣金率</td>
+<td>否</td>
+<td>同上</td>
+</tr>
+<tr>
+<td>7</td>
+<td>推荐卡佣金率</td>
+<td>否</td>
+<td>同上（v1.22.0 新增）</td>
+</tr>
+<tr>
+<td>8</td>
+<td>其他佣金率</td>
+<td>否</td>
+<td>同上（v1.22.0 新增）</td>
+</tr>
+</tbody>
+</table>
+<p>底部说明：<strong>v1.15.0 起移除</strong>（原「留空表示按通用佣金率结算；两个渠道都与通用佣金率一致时不会新增规则。」已删除）；「不参与结算」类型的提示（命中该规则的商品订单不参与结算…）仍保留。</p>
+<p>保存校验（按顺序）：</p>
+<ol>
+<li>未选择商品 → 「请先搜索并选择商品」</li>
+<li>未填结算开始时间 → 「请填写结算开始时间」</li>
+<li>结束早于开始 → 「结算结束时间不能早于开始时间」</li>
+<li>任一渠道费率越界 → 「{渠道名}佣金率需在 0-100 之间」（5 个渠道依次校验）</li>
+<li><strong>5 个渠道费率都与各自通用佣金率一致（或都留空）→ 「该规则的佣金率与通用佣金率一致，无需单独指定」，不新增</strong></li>
+<li>商品 ID 已存在 → 「该商品 ID 已存在」</li>
+</ol>
+<p>保存成功：写入商品 + 该条规则，更新更新人 / 更新时间，列表回到第 1 页并置顶，toast「新增成功」。</p>
+<h3 id="45">4.5 编辑 / 新增结算规则</h3>
+<ul>
+<li><strong>入口</strong>：① 新增——列表主行操作列「新增结算规则」（商品已锁定，无需再搜索）；② 编辑——展开子表中的「编辑」（逐条编辑该条规则）。</li>
+<li>弹窗标题：<code>编辑结算规则</code> / <code>新增结算规则</code>。</li>
+<li>弹窗内容：顶部只读商品卡（商品图 / 名称 / ID / 上架时间）→ <strong>结算类型</strong>（单选：指定佣金结算 / 不参与结算）→ <strong>结算时间</strong>（<strong>一体化组件</strong>：一个 38px 高、单边框的容器内嵌两个无边框日期输入，中间「～」分隔，结束框内提示「不填视为长期有效」，聚焦时整个容器高亮）→ <strong>5 个渠道费率</strong>（直播（默认）/ 短视频 / 商品卡 / 推荐卡 / 其他 <strong>并排一行 5 列</strong>，标签只写渠道名、不再带「佣金率」三字，默认带出各自通用佣金率；剔除类型时整行隐藏）。编辑时自动带出该规则的类型。</li>
+<li>底部说明：<strong>v1.15.0 起移除</strong>原「留空表示按通用佣金率结算；两个渠道都与通用佣金率一致时不保存该规则。」文案；「不参与结算」类型的剔除提示仍保留。</li>
+<li>校验同 4.4（不含商品 ID 重复校验），额外增加<strong>时间段重叠校验</strong>：与该商品其他规则重叠 → 「该商品在该时间段内已存在结算规则」（编辑自身不计入重叠）。</li>
+<li>保存后重算商品状态与更新时间、刷新列表，toast「保存成功」/「新增规则成功」。</li>
+</ul>
+<h3 id="46">4.6 结束结算（商品维护页已移除，仅达播保留）</h3>
+<blockquote>
+<p>v1.13.0 起<strong>商品维护页移除「结束结算」操作</strong>，展开子表的操作列只保留「编辑」；规则到期结束可通过「编辑」直接修改结算结束时间实现。本节描述的结束结算流程<strong>仅在「祈飞达播结算维护」页保留</strong>（见第 5 章）。</p>
+</blockquote>
+<ul>
+<li><strong>入口（达播页）</strong>：列表/子表中的「结束结算」（仅待开始 / 生效中显示）。</li>
+<li>弹窗「结束结算」：商品信息卡（含该规则的结算时间）+ 结算结束时间（<strong>默认预填当天</strong>，必填）。</li>
+</ul>
+<p>校验：</p>
+<ul>
+<li>未填 → 「请填写结算结束时间」</li>
+<li>早于该规则的开始时间 → 「结算结束时间不能早于规则开始时间 YYYY.MM.DD」</li>
+</ul>
+<p>保存效果：</p>
+<ul>
+<li>写入该规则的结束时间；若结束时间 &lt; 今天 → 该规则状态变为「已结束」；商品状态随之重算（全部规则已结束 → 已结束）。</li>
+<li>刷新更新人 / 更新时间，并触发该规则影响范围内订单的重算。</li>
+<li>toast：已结束 → 「已将结算结束时间设为 YYYY.MM.DD」；未到期 → 「结算结束时间已设为 YYYY.MM.DD，到期自动结束」。</li>
+</ul>
+<h3 id="47">4.7 批量导入</h3>
+<p>弹窗「批量导入商品」，仅包含两块内容（不含其他说明文字）：</p>
+<ol>
+<li><strong>导入文件</strong>：虚线框上传区「点击选择文件，或将文件拖拽到此处」，辅助文案「支持 .xlsx / .xls / .csv，单次最多 1000 条」；选中后显示文件 chip（文件名 + 大小 KB + 「移除」）。</li>
+<li><strong>下载导入模版</strong>：文字链接，点击下载 CSV 模板 <code>祈飞结算商品导入模版.csv</code>，字段：<code>商品ID, 结算开始时间, 结算结束时间, 直播佣金率, 短视频佣金率, 商品卡佣金率, 推荐卡佣金率, 其他佣金率</code>（v1.22.0 起扩为 8 列，渠道顺序与页面一致；含 BOM，Excel 可直接打开）。示例：<code>782654319876,2026-10-01,,20,,,18,,</code>（留空 = 按该渠道通用佣金率结算）。</li>
+</ol>
+<p>校验：未选文件点「确定导入」→ 「请先选择导入文件」。当前为原型，导入结果仅 toast 提示（解析逻辑待后端接入）。</p>
+<hr />
+<h2 id="5">5. 祈飞达播结算维护</h2>
+<h3 id="50-v1250">5.0 达人结算范围（只读查看）+ 达人通用佣金率（v1.25.0）</h3>
+<p>列表上方一张配置卡（<code>.config</code> 布局），<strong>达人结算范围在此为只读展示，不做设置</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>达人结算范围（只读）</td>
+<td>展示为「达人结算范围 ／ 当前模式文本」+ 右侧灰色小字「在「店铺档案」中设置」（v1.25.0）。三种模式：<strong>全部达人结算</strong>（默认）/ <strong>指定达人结算</strong> / <strong>指定达人不结算，其余结算</strong>。设置入口在「<strong>店铺档案</strong>」菜单（见第 6 节），达播页<strong>不再提供单选控件</strong>，切换模式后回到本页即时生效（进入页面时重新读取）</td>
+</tr>
+<tr>
+<td>达人通用佣金率</td>
+<td>仅模式①③展示（模式②隐藏）。展示为一行 <code>达人通用佣金率 20%</code> + 「历史变更记录」文字按钮（<strong>12px</strong>，v1.25.0 与商品维护一致），<strong>不带渠道、单个数值</strong>，交互与「祈飞结算商品维护」的通用佣金率完全一致：<br />· 「历史变更记录」弹窗列出历次变更（生效日期 / 达人通用佣金率 / 更新信息，按生效日期倒序），底部「新增变更」；<br />· 「变更达人通用佣金率」弹窗：生效日期（默认今天）+ 达人通用佣金率（0–100，框内 <code>%</code>）；保存后生效日期 ≥ 新日期的旧记录被覆盖（与商品维护同一规则）、卡片与历史表即时刷新，toast「达人通用佣金率已保存」；<br />· 该值同时作为<strong>保底费率</strong>：达人侧新增指定商品、全店通用佣金率输入框的默认值均取当前达人通用佣金率</td>
+</tr>
+<tr>
+<td>说明文案</td>
+<td><strong>统一为一条</strong>（v1.25.0 起，不再按模式切换；v1.26.0 文案扩写）：「<strong>指定达人佣金率和特别佣金商品在下方维护，未指定的达人使用通用佣金率。结算优先级：指定达人指定商品特别佣金率&gt;指定达人佣金率&gt;达人通用佣金率</strong>」</td>
+</tr>
+</tbody>
+</table>
+<p><strong>模式③下的两个页签（两张表、两个新增按钮）</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>页签</th>
+<th>表格列</th>
+<th>新增按钮</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>指定佣金结算</strong>（默认）</td>
+<td>与 5.1 的达人带货表一致（达人信息 / 商品数 / 佣金率 / 结算时间 / 状态 / 更新信息 / 操作），支持展开子表</td>
+<td><code>＋ 新增达人带货</code></td>
+</tr>
+<tr>
+<td><strong>不结算达人</strong></td>
+<td>达人信息 / 结算时间 / 状态 / 更新信息 / 操作（无商品数、佣金率，无展开）</td>
+<td><code>＋ 新增不结算达人</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>页签只在模式③出现；切到模式①②时强制回到「指定佣金结算」页签并隐藏页签行。</li>
+<li>两个页签共用上方的商品 / 达人 / 状态筛选与分页规则；两个表的空态分别为「没有匹配的达人带货记录」「暂无不结算达人」。</li>
+<li>模式③下不再使用「灰显 + 不参与计算标签」的旧表达（v1.23.0 做法已废弃），不结算达人独立成表。</li>
+</ul>
+<h3 id="51">5.1 列表</h3>
+<p><strong>查询区（顶部工具栏，与「祈飞结算商品维护」同款，v1.27.0 重构）</strong></p>
+<p>达播页顶部新增一张工具栏卡片（位于「达人结算范围」配置卡之上），与商品维护页结构一致：<strong>单行 = 结算时间段 + 商品筛选 + 达人筛选 + 查询</strong>。商品、达人筛选与查询由此前列表内工具栏<strong>上移</strong>到顶部工具栏，尺寸、分隔线、清空按钮规范与商品维护页完全一致（见 4.3「查询区排版规范」）。<strong>「＋ 新增达人带货 / ＋ 新增不结算达人」不在顶部工具栏，而是与列表卡片内的页签同一行、靠右对齐，并随所选页签切换</strong>（v1.28.0 下移至列表卡片，v1.28.1 起与页签同行）。</p>
+<table>
+<thead>
+<tr>
+<th>控件</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>结算时间段</strong>（v1.27.0 新增）</td>
+<td>与商品维护页<strong>同款组合日期选择器</strong>（触发器展示 <code>2026.10.01 ～ 2026.10.31</code> + 日历图标 + 下拉箭头，点击展开浮层，含<strong>快捷预设</strong>本月/上月/近7天/近30天/今年 + 浮层内并排起止日期 + 确定/取消）；<strong>默认本月</strong>，下方列表只展示「结算开始～结束」与所选时间段<strong>有交集</strong>的达人记录（交集规则：<code>开始 ≤ 筛选上界 且 (结束为空或 ≥ 筛选下界)</code>）；与商品维护页为<strong>相互独立</strong>的两个实例，各自记忆所选时段</td>
+</tr>
+<tr>
+<td><strong>商品筛选</strong>（v1.19.0 新增，v1.27.0 上移至顶部工具栏）</td>
+<td>带「商品」标签的输入框，占位「请输入商品 ID / 商品名称」，<strong>按商品 ID 或商品名称模糊匹配</strong>；命中后<strong>只保留旗下有匹配带货商品的达人</strong>，未带货该商品的达人整行隐藏。<br />· 输入即筛（<code>input</code> 事件），回车亦生效，右侧带「×」一键清空（仅在输入后出现）；<br />· <strong>筛选态下该行的「商品数」显示 <code>匹配数/总数</code></strong>（如 <code>1/2</code>，分子蓝色、<code>title</code> 提示「匹配 1 个 / 共 2 个带货商品」），「佣金率」只统计<strong>匹配商品</strong>的费率区间；<br />· 展开子表<strong>只列匹配的商品</strong>（行底色高亮），并在底部提示「仅展示匹配「关键词」的商品，该达人共 N 个带货商品」；<br />· 无结果时空态文案变为「没有带货「关键词」的达人记录」</td>
+</tr>
+<tr>
+<td>达人筛选（v1.27.0 上移至顶部工具栏）</td>
+<td>占位「请输入达人昵称 / 抖音号」，<strong>只匹配达人昵称与抖音号</strong>；输入即筛</td>
+</tr>
+<tr>
+<td>查询</td>
+<td>查询按钮保留（重置到第 1 页并重查），与实时筛选等效；达播列表<strong>不做列表级批量导入</strong>；批量导入入口只存在于「新增达人带货 / 编辑达人带货」弹窗的「批量导入」页签内</td>
+</tr>
+<tr>
+<td><strong>＋ 新增达人带货 / ＋ 新增不结算达人</strong>（v1.28.0 下移，v1.28.1 与页签同行）</td>
+<td><strong>与页签同一行、靠右对齐</strong>（页签在左，按钮在右，容器 <code>#dhead</code> 底部有 1px 分隔线，按钮右边缘与卡片内边距 18px 对齐），<strong>随所选页签切换</strong>：页签为「指定佣金结算」时显示「＋ 新增达人带货」，切换为「不结算达人」时显示「＋ 新增不结算达人」；配置模式为「全部达人结算 / 指定达人结算」（页签隐藏）时该行不再有页签与分隔线，按钮单独显示在列表卡片右上角</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>原「状态下拉」随「状态」列一并移除（v1.27.0）：达人列表不再展示「状态」列，时间维度的有效性由顶部「结算时间段」筛选表达。商品 / 达人筛选与结算时间段筛选可任意组合（均为与关系）。</p>
+<p>新增按钮位置（v1.28.0 下移至列表卡片，v1.28.1 起与页签同一行）：按钮<strong>不在顶部工具栏</strong>，而是与「指定佣金结算 / 不结算达人」页签<strong>同行靠右</strong>，视觉上「左侧选页签、右侧新增该页签的对象」，避免顶部工具栏过长、也避免二次页签切换时按钮位置与对象不匹配；页签隐藏时按钮单独显示在列表卡片右上角。</p>
+</blockquote>
+<p><strong>表格字段</strong>（一行 = 一个达人）</p>
+<table>
+<thead>
+<tr>
+<th>列</th>
+<th>内容</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>展开</td>
+<td>左侧 icon 按钮（三角，展开后旋转 90°）</td>
+<td>不显示「展开/收起」文字，仅 icon + hover 提示</td>
+</tr>
+<tr>
+<td>达人信息</td>
+<td>头像（38px 圆形）+ 昵称 + <code>抖音号：xxx [复制]</code></td>
+<td>头像与昵称来自抖音搜索；<strong>不结算达人不在此表</strong>，见 5.0 模式③的第二个页签</td>
+</tr>
+<tr>
+<td>商品数</td>
+<td><strong>带货范围为「指定商品」→ 纯数字</strong>；<strong>带货范围为「全店商品」→ 显示 <code>全店</code></strong>，另有指定商品时追加 <code>+N</code>（N 为指定商品数）</td>
+<td>不带单位「个」；商品筛选命中时「指定商品」达人显示 <code>匹配数/总数</code>，<strong>全店达人恒匹配</strong>（v1.23.0）</td>
+</tr>
+<tr>
+<td>佣金率</td>
+<td>「指定商品」→ 该达人全部带货商品的佣金率范围：<code>20%</code> 或 <code>15% ~ 22%</code>；「全店商品」→ <strong><code>全店 18%</code>，另有特别佣金商品时追加 <code>+ m%～n%</code></strong>（m%～n% 为该达人特别佣金商品的费率区间，单条则 <code>+ m%</code>，v1.27.0 由「<code>+N 指定</code>」改名）；<strong>该追加片段与主费率同色同字号（<code>#1f2937</code> / 12px），不再使用灰色 11px 小字</strong>（v1.28.1）</td>
+<td>无商品且非全店时显示 <code>—</code>；位置靠左，紧跟商品数</td>
+</tr>
+<tr>
+<td>结算时间</td>
+<td>开始～结束合并成一列，示例 <code>2026.10.01～2026.12.31</code></td>
+<td>开始必填；<strong>结束留空 = 长期，显示 <code>2026.10.01～永久</code></strong></td>
+</tr>
+<tr>
+<td>更新信息</td>
+<td>两行：上行 <code>更新人</code>、下行 <code>更新时间</code>（<code>YYYY.MM.DD HH:mm</code>，11px 灰色）</td>
+<td>与商品维护页统一为两行展示，列宽 130px</td>
+</tr>
+<tr>
+<td>操作</td>
+<td><code>编辑</code></td>
+<td>蓝色文字按钮，打开「编辑达人带货」弹窗（合作信息 + 带货商品在同一弹窗内维护）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>其他</strong></p>
+<ul>
+<li>不展示「达人粉丝数」。</li>
+<li>排序：<strong>内部仍优先按状态排序（生效中在前，已结束在后），状态相同按更新时间倒序</strong>；「状态」列已随 v1.27.0 移除，达人的时效有效性改由顶部「结算时间段」筛选体现。</li>
+<li>分页规则同商品维护页（每页 20 条）。</li>
+<li>表格最小宽度 1120px，窄屏横向滚动，操作列不换行截断。</li>
+<li>空态：「没有匹配的达人带货记录」。</li>
+</ul>
+<h3 id="52">5.2 展开明细</h3>
+<p>点击左侧 icon 展开该达人下方子表：</p>
+<table>
+<thead>
+<tr>
+<th>子表列</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>商品信息</td>
+<td>商品图（58×58，与商品维护页统一尺寸）+ 商品名称 + <code>商品 ID：xxx [复制]</code>（ID 在名称下方）；<strong>带货范围为「全店」时不再展示「全店商品 / 达人佣金率」占位行（v1.28.0 移除），子表只列该达人的特别佣金商品</strong>，全店费率由主行「全店 18% + 25%」表达；无特别佣金商品时占位提示「暂无特别佣金商品，全店按达人佣金率结算」</td>
+</tr>
+<tr>
+<td>佣金率</td>
+<td><code>xx%</code>（指定商品行显示各自费率，全店达人的子表行即特别佣金商品费率）</td>
+</tr>
+</tbody>
+</table>
+<p>规则：</p>
+<ul>
+<li><strong>列对齐</strong>：子表两列与主表列保持垂直对齐——「商品信息」列左边缘对齐主表「达人信息」列的缩略图/头像左边缘（含左侧展开图标列的缩进），「佣金率」列左边缘对齐主表「佣金率」列；列宽随主表列宽动态计算（窗口尺寸变化时重算）。</li>
+<li>子表行背景浅灰，与主行视觉区分；无商品时显示「暂无带货商品」。</li>
+<li>展开状态在翻页、查询、重绘后保持（按达人 key 记忆）。</li>
+</ul>
+<h3 id="53">5.3 新增达人带货</h3>
+<p>弹窗「新增达人带货」，操作逻辑与「新增商品」保持一致：<strong>先搜索选题对象 → 展示信息卡 → 再填业务字段</strong>。</p>
+<h4 id="531">5.3.1 达人（选择区）</h4>
+<p><strong>下拉搜索选择框（v1.26.0 重构，取代原「搜索框 + 搜索按钮」三步式）</strong>：</p>
+<ul>
+<li>弹窗打开时只展示一个<strong>达人下拉搜索框</strong>（<code>.tcombo</code>）：一个输入框（占位「搜索达人昵称 / 抖音号」）+ 右侧下拉箭头；结算日期与带货商品区域默认隐藏。</li>
+<li><strong>数据来源 = 订单中已带货达人</strong>：下拉框直接展示订单反查得到的已带货达人列表（原型内置 7 个：小鹿同学 / 阿布Abu / 蒙蒙Mon / 糖糖Tanya / 豆豆Dodo / 琳琳Lynn / 小胖Pang），<strong>无需手工录入抖音号</strong>；输入框聚焦或点击即弹出候选列表。</li>
+<li><strong>候选行展示达人信息</strong>：每行 = 头像（32px 圆形，含昵称首字）+ 昵称 + 抖音号（如「小鹿同学 ／ 抖音号：qifei_xiaolu」），支持按<strong>昵称或抖音号</strong>模糊匹配，命中可多条。</li>
+<li><strong>选中流程</strong>：点候选行的「选择」或整行 → 收起下拉、同位置展示<strong>达人信息卡</strong>（头像 40px + 昵称 + <code>抖音号：xxx [复制]</code> + 右侧「重新选择」，白底细边框卡片，v1.28.2 由 48px 灰底卡精简），同时<strong>展开</strong>结算日期与带货商品区域；点「重新选择」回到下拉搜索态并清空已选。</li>
+<li>下拉浮层为 <code>position:fixed</code>（随页面滚动/缩放重新定位，必要时向上翻转），点击浮层外区域自动关闭。</li>
+</ul>
+<blockquote>
+<p>设计取舍：原「输入抖音号 → 点搜索 → 结果列表 → 选择」改为「聚焦即出下拉、边输边筛」，更贴近电商后台选择已带货达人的真实场景，也避免误填未带货的抖音号。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>必填</th>
+<th>交互与校验</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>达人</td>
+<td>下拉搜索选择框 <code>.tcombo</code>（<strong>v1.26.0</strong>）</td>
+<td>是</td>
+<td>候选 = 订单已带货达人，按昵称/抖音号模糊匹配；选中后展示达人信息卡并展开下方区域，可「重新选择」；无命中 → 浮层内提示「未搜索到达人」</td>
+</tr>
+<tr>
+<td>（已选达人卡）</td>
+<td>展示态</td>
+<td>—</td>
+<td>头像（40px 圆形，白底细边框卡）+ 昵称 + <code>抖音号：xxx [复制]</code>，右侧「重新选择」；点击重新选择恢复搜索态并清空已选</td>
+</tr>
+<tr>
+<td><strong>结算时间</strong>（v1.20.0 合并，组件与商品维护统一 <strong>v1.26.0</strong>）</td>
+<td>一个「结算时间」标签下、同一行内并排两个输入 <code>开始 ～ 结束</code>，外层为 <strong>38px 单边框容器 <code>.rangedate</code></strong>（与「祈飞结算商品维护」新增/编辑弹窗<strong>完全一致</strong>：容器边框 + 聚焦高亮、内嵌两个无边框日期输入、中间「～」垂直居中）</td>
+<td>开始必填 / 结束选填</td>
+<td>开始默认 = 店铺开播日；若该达人已有合作记录，带出其原有开始日期；<br />· 结束<strong>可留空 = 长期有效</strong>（框内提示「不填视为长期有效」），不可早于开始；已有记录的达人带出原结束日期</td>
+</tr>
+<tr>
+<td><strong>带货范围</strong>（v1.23.0 新增，<strong>v1.28.2 单选改分段控件；v1.28.4 内容宽度 + 文字垂直居中</strong>）</td>
+<td><strong>分段控件</strong>（<code>.radios</code> 内两个选项并为胶囊组，<strong>内容宽度、不撑满字段</strong>：轨道 <code>#eef1f6</code> + 1px 边框 + 圆角 8 + 内边距 3px、选项高 32px、左右内边距 20px；未选中项 13px <code>#5b6675</code>，<strong>选中项白底 + 轻投影 + 600 字重</strong>；选项文字<strong>垂直居中</strong>）：<strong>指定商品 / 全店商品</strong></td>
+<td>是</td>
+<td>默认「指定商品」（原有模型）；切到「全店商品」时：① 展开「<strong>达人佣金率</strong>」输入（位于带货范围<strong>右侧同行</strong>，<code>.scoperow</code> 两列网格、自然宽度左对齐）；② 「带货商品」区域标题变为「<strong>特别佣金商品</strong>」，清单可为空——空清单 = 全部商品按达人佣金率结算</td>
+</tr>
+<tr>
+<td><strong>达人佣金率</strong>（v1.23.0 原名「全店通用佣金率」，<strong>v1.26.0 改名</strong>）</td>
+<td>数字输入 + 框内 <code>%</code> 后缀（<code>.srate</code>，38px，输入框宽 104px），与带货范围<strong>同一行右侧</strong></td>
+<td>带货范围 = 全店时必填</td>
+<td>0–100；留空或越界 →「达人佣金率需在 0-100 之间」（<strong>v1.26.0 文案同步改名</strong>）；默认带出店铺档案达人通用佣金率（当前 20%）</td>
+</tr>
+</tbody>
+</table>
+<h4 id="532">5.3.2 带货商品（两个页签）</h4>
+<blockquote>
+<p><strong>标题固定为「特别佣金商品」（v1.28.3 起不再随带货范围变化）</strong>：无论带货范围选「指定商品」还是「全店商品」，该区域标题都显示「<strong>特别佣金商品</strong>」（v1.26.0 由「指定商品（可选，费率不同）」改名；v1.28.3 前为「指定商品 → 带货商品 / 全店商品 → 特别佣金商品」动态切换）。带货范围 = 全店商品时清单可为空（全部按达人佣金率结算），清单内商品即为<strong>覆盖达人佣金率</strong>的特别佣金商品。</p>
+</blockquote>
+<p><strong>区域样式</strong>（v1.28.2 调整）：<strong>页签内容区</strong>（标题与页签之下、页签下方那条分割线以里的区域）使用<strong>白底 + 1px 细边框</strong>、圆角 8px、内边距 12/14px（原浅灰 <code>#f7f9fc</code> 与内部虚线空态框叠在一起显得脏，故改为白底细边框）；标题行（「带货商品」+ 页签）保持白底。区域内的上传框、已选商品行使用白底；<strong>空态提示</strong>为虚线框、最小高度 60px、12px 灰色文字居中（原 13px、内边距 16px 偏高）。</p>
+<p><strong>页签位置</strong>：与「带货商品」标题同一行、靠右显示（标题在左，页签在右，下方一条分隔线）；页签顺序 <strong>批量导入（左）/ 手动添加（右）</strong>，默认选中<strong>手动添加</strong>。切换页签不丢失已填内容。</p>
+<p><strong>A. 手动添加（默认）</strong>——搜索添加，一行一个商品：</p>
+<table>
+<thead>
+<tr>
+<th>元素</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>搜索输入框</td>
+<td>占位「输入带货商品ID」，支持按商品 ID 或商品名称模糊匹配</td>
+</tr>
+<tr>
+<td>搜索按钮</td>
+<td>输入框右侧，点击或回车触发；未输入 → 「请输入带货商品 ID」</td>
+</tr>
+<tr>
+<td>搜索结果</td>
+<td>输入框下方列出命中商品，每行：商品图（44px）+ 商品名称 + <code>商品 ID：xxx</code> + 「选择」按钮；无命中 → 「未匹配到系统商品，请核对商品 ID」</td>
+</tr>
+<tr>
+<td>已选清单</td>
+<td>选择后商品落到下方清单，一行一条：<strong>序号</strong> + 商品图（36px）+ 商品名称 + <code>商品 ID：xxx</code> + <strong>「佣金率」文本</strong> + 佣金率输入 + <code>%</code> + <strong>移除 icon 按钮</strong>（叉号 <code>×</code>）。序号从 1 递增，删除后自动重排；佣金率<strong>默认取店铺档案达人佣金率（当前 20%）</strong>，可改，0–100</td>
+</tr>
+<tr>
+<td>选择后的行为</td>
+<td>清空搜索框、收起搜索结果，清单追加一行；重复选择同一商品 → 「该商品已在带货清单中」</td>
+</tr>
+<tr>
+<td>空清单</td>
+<td>显示「暂无带货商品，请在上方搜索商品 ID 后选择」</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>说明：不再使用「＋ 添加一行」的空白行方式，改为「搜索 → 选择 → 落一行」，避免用户手填不存在的商品 ID。</p>
+</blockquote>
+<p><strong>B. 批量导入</strong>——上传文件 + 模板下载：</p>
+<table>
+<thead>
+<tr>
+<th>元素</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>上传区</td>
+<td>虚线框「点击选择文件，或将文件拖拽到此处」，辅助文案「支持 .xlsx / .xls / .csv，单次最多 1000 条」；支持点击与拖拽两种方式</td>
+</tr>
+<tr>
+<td>文件 chip</td>
+<td>选中后显示文件名 + 大小 KB + 「移除」</td>
+</tr>
+<tr>
+<td>下载导入模版</td>
+<td>文字链接，下载 CSV 模板 <code>达人带货商品导入模版.csv</code>，<strong>模版字段：商品 ID、佣金率</strong></td>
+</tr>
+</tbody>
+</table>
+<p>导入解析规则（原型已实现 CSV 解析，可直接验证）：</p>
+<ul>
+<li>首行若为表头（含「商品 ID」）自动跳过。</li>
+<li>分隔符兼容 <code>,</code> <code>;</code> <code>\t</code>；忽略空行。</li>
+<li>逐行校验：商品 ID 必须在系统商品库中存在；佣金率 0–100；同一文件内商品不可重复。</li>
+<li>任一校验失败 → 中止导入并提示「第 N 行…」；全部通过 → 保存并 toast「已导入 N 个商品」。</li>
+<li>原型阶段 Excel（.xlsx/.xls）暂不解析，提示「原型暂只解析 CSV，Excel 可另存为 CSV 后导入」；正式开发需后端解析 Excel。</li>
+</ul>
+<h4 id="533">5.3.3 保存校验与结果</h4>
+<p>校验顺序：未选达人 →「请先搜索并选择达人」；缺开始日期 →「请填写结算开始日期」；结束日期有值但早于开始 →「结算结束日期不能早于开始日期」；<strong>带货范围 = 全店且通用佣金率留空/越界 →「达人佣金率需在 0-100 之间」（v1.23.0 校验，v1.26.0 文案改名）</strong>；带货商品为空且带货范围 = 指定商品 →「请至少添加一个带货商品」（<strong>全店模式下允许空清单</strong>）；某行佣金率越界 →「第 N 行佣金率需在 0-100 之间」。（结束日期留空视为长期有效，不再校验必填）</p>
+<p>保存逻辑：</p>
+<ul>
+<li><strong>达人不存在</strong> → 新增一条记录（置顶、默认展开），记录带货范围与达人佣金率，toast「新增成功」。</li>
+<li><strong>达人已存在</strong> → 在该达人下<strong>追加</strong>商品：</li>
+<li>与已有商品重复的自动跳过（v1.23.0 起：即使全部重复也继续保存——带货范围 / 达人佣金率 / 起止日期若有变化同样生效，toast「达人带货已更新」）；</li>
+<li><strong>带货范围与达人佣金率按本次弹窗选择整体更新</strong>；</li>
+<li>追加成功后自动展开该行，toast「已为「达人昵称」追加 N 个商品」。</li>
+<li>已有记录的起止日期<strong>不因追加商品而改变</strong>（弹窗带出的日期仅用于新增记录）。</li>
+</ul>
+<h3 id="54">5.4 编辑达人带货（合作信息 + 带货商品）</h3>
+<p>入口：列表操作列「编辑」。<strong>合作信息与带货商品合并在同一个弹窗内维护</strong>（原「编辑合作信息」「编辑带货商品」两个弹窗已合并），减少一次打开弹窗的成本。</p>
+<p>弹窗「编辑达人带货」自上而下：</p>
+<ol>
+<li><strong>达人</strong>：只读达人信息卡（头像 48px + 昵称 + <code>抖音号：xxx [复制]</code>），不可更换达人。</li>
+<li><strong>结算时间</strong>（v1.20.0 由「结算开始日期 / 结算结束日期」两个独立字段合并为一行）：一个「结算时间」标签 + <code>开始 ～ 结束</code> 两个等宽输入并排，外层为 <strong>38px 单边框 <code>.rangedate</code> 容器（与「祈飞结算商品维护」弹窗完全一致，v1.26.0 统一）</strong>；开始必填，<strong>结束可留空 = 长期有效</strong>（框内提示「不填视为长期有效」），结束不得早于开始。</li>
+<li><strong>带货范围</strong>（v1.23.0 新增，与新增弹窗一致）：单选 指定商品 / 全店商品，打开时按该达人当前范围回显；切到「全店商品」展开「<strong>达人佣金率</strong>」（回显当前值，无则取店铺通用 20%，与带货范围<strong>同一行右侧</strong>；v1.26.0 由「全店通用佣金率」改名），「带货商品」标题变为「<strong>特别佣金商品</strong>」（v1.26.0 由「指定商品（可选，费率不同）」改名）。</li>
+<li><strong>带货商品</strong>：标题与页签同一行靠右（批量导入 ｜ 手动添加，默认手动添加），内容区为浅灰底面板。</li>
+<li>手动添加：输入带货商品 ID → 「搜索」→ 结果列表（图 + 名称 + ID + 「选择」）→ 选择后落入清单；已有商品预填在清单中。</li>
+<li>清单行：序号（删除后重排）+ 商品图（36px）+ 名称 + <code>商品 ID：xxx</code> + 「佣金率」+ 输入框 + <code>%</code> + <strong>移除 icon 按钮</strong>（叉号 <code>×</code>）。</li>
+<li>批量导入：上传 .xlsx/.xls/.csv + 下载模版（字段：商品 ID、佣金率）；解析通过后追加到清单并切回「手动添加」。</li>
+</ol>
+<p>校验（按顺序）：</p>
+<ul>
+<li>缺开始日期 →「请填写结算开始日期」</li>
+<li>结束日期有值且早于开始 →「结算结束日期不能早于开始日期」</li>
+<li>带货范围 = 全店且通用佣金率留空/越界 →「达人佣金率需在 0-100 之间」（v1.23.0 校验，v1.26.0 文案改名）</li>
+<li>批量导入页签下未选文件 →「请先选择导入文件」</li>
+<li>清单为空且带货范围 = 指定商品 →「请至少保留一个带货商品」（全店模式允许空清单，v1.23.0）</li>
+<li>重复选择同一商品 →「该商品已在带货清单中」</li>
+<li>任一佣金率越界 →「第 N 行佣金率需在 0-100 之间」</li>
+</ul>
+<p>保存后：同时更新<strong>带货范围、达人佣金率</strong>、结算起止日期、带货商品清单、状态（结束日期 ≤ 今天 → 已结束；留空 → 生效中）、更新人与更新时间；toast「达人带货已保存」，列表结算时间列与佣金率范围同步刷新。</p>
+<h3 id="55-v12403">5.5 新增不结算达人（v1.24.0，仅模式③）</h3>
+<p>入口：达人结算范围 = 「指定达人不结算，其余结算」时，「不结算达人」页签右上角的 <code>＋ 新增不结算达人</code>（同一位置的「＋ 新增达人带货」在该页签隐藏）。</p>
+<p>弹窗「新增不结算达人」结构最简：<strong>达人（搜索选择）→ 结算时间</strong>，无带货范围 / 带货商品 / 费率字段。</p>
+<ul>
+<li>达人选择与 5.3.1 完全一致（<strong>v1.26.0 起同为下拉搜索选择框 <code>.tcombo</code></strong>：候选 = 订单已带货达人，按昵称/抖音号模糊匹配，选中后展示信息卡 + 重新选择）。</li>
+<li>结算时间：<code>开始 ～ 结束</code> 一行（结束可留空 = 长期有效），规则同 5.3.1。</li>
+<li>校验：未选达人 →「请先搜索并选择达人」；缺开始日期 →「请填写结算开始日期」；结束早于开始 →「结算结束日期不能早于开始日期」；该达人已在不结算名单 →「该达人已在不结算名单中」。</li>
+<li>保存：写入「不结算达人」表并置顶，toast「不结算达人已保存」；表内「编辑」复用同一弹窗（标题变为「编辑不结算达人」，带出原结算时间），保存后 toast 同上。</li>
+</ul>
+<hr />
+<h2 id="6-v1250">6. 店铺档案（v1.25.0）</h2>
+<p>财务维护店铺基础信息与达播结算模式的地方。路由 <code>#store</code>，左侧导航第 4 项。</p>
+<h3 id="61">6.1 页面结构</h3>
+<table>
+<thead>
+<tr>
+<th>区块</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>店铺信息</td>
+<td>只读键值对卡片：店铺名称（祈飞旗舰店）／所属平台（抖音）／开播日（2026.10.01）。三列横排，键为 12px 灰色、值为 14px 深色</td>
+</tr>
+<tr>
+<td>达人结算范围</td>
+<td>三个单选：<strong>全部达人结算</strong>（默认）／<strong>指定达人结算</strong>／<strong>指定达人不结算，其余结算</strong>；下方蓝色说明（<code>.tip</code>）：「全部达人结算：达播列表只展示指定佣金率的达人和商品，其余按达人通用佣金率结算。指定达人结算：只有列表内的达人和商品结算，其他达人不结算（此时不展示达人通用佣金率）。指定达人不结算，其余结算：列表中的达人不结算，其余达人按达人通用佣金率结算，达播列表拆成「指定佣金结算」「不结算达人」两个页签。在此修改后，「祈飞达播结算维护」即时生效。」</td>
+</tr>
+<tr>
+<td>其他店铺字段</td>
+<td>本期未实现，待补（见第 9 节「待开发 / 待确认」）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="62">6.2 与达播页的联动</h3>
+<ul>
+<li>切换单选即写入店铺的 <code>partMode</code>，<strong>无需保存按钮</strong>，即时生效。</li>
+<li>进入「祈飞达播结算维护」页时重新读取该值：刷新达人结算范围的只读展示文本、达人通用佣金率卡片的显隐、以及模式③下两个页签的显隐（切非模式③时强制回到「指定佣金结算」页签）。</li>
+<li>模式②（指定达人结算）隐藏达人通用佣金率；模式①③展示。</li>
+<li>达播页的「达人结算范围」区域为<strong>纯查看</strong>：只有模式名文本 + 「在「店铺档案」中设置」，不提供任何可编辑控件。</li>
+</ul>
+<hr />
+<h2 id="7">7. 通用交互与视觉规范</h2>
+<h3 id="61_1">6.1 日期</h3>
+<table>
+<thead>
+<tr>
+<th>规则</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>展示格式</td>
+<td>统一 <code>YYYY.MM.DD</code>（如 <code>2026.10.15</code>），时间 <code>YYYY.MM.DD HH:mm</code></td>
+</tr>
+<tr>
+<td>存储格式</td>
+<td>内部仍用 <code>YYYY-MM-DD</code>，展示层统一转换，避免影响比较与提交</td>
+</tr>
+<tr>
+<td>日期控件</td>
+<td>原生日期选择器；<strong>空值时的「年/月/日」占位文本为灰色</strong>（<code>#9aa3af</code>），有值恢复深色</td>
+</tr>
+</tbody>
+</table>
+<h3 id="62_1">6.2 输入框占位</h3>
+<p>所有未选择的输入框占位文本、空日期占位，统一灰色 <code>#9aa3af</code>，不得使用深色正文颜色。输入框下方不再展示任何提示语/说明文案。</p>
+<h3 id="63">6.3 复制</h3>
+<ul>
+<li>位置：商品 ID 后（商品维护列表、新增/编辑/结束结算商品卡、达播子表、编辑达人带货弹窗清单）、抖音号后（达播列表、达人卡）。</li>
+<li>样式：蓝色 12px 文字按钮「复制」，hover 下划线，不占高度。</li>
+<li>反馈：复制成功 toast「已复制商品 ID」/「已复制抖音号」（按内容判定：纯数字 ≥10 位视为商品 ID，否则为抖音号）；失败 →「复制失败，请手动复制」。</li>
+<li>实现：优先 <code>document.execCommand('copy')</code>，失败回退 <code>navigator.clipboard</code>。</li>
+</ul>
+<h3 id="64">6.4 弹窗</h3>
+<ul>
+<li>遮罩 48% 黑，居中卡片；标准宽 560px，小弹窗（结束结算/批量导入）440px。</li>
+<li>关闭方式：右上 ×、取消按钮、点遮罩空白处。</li>
+<li>主按钮在右下，蓝色；次按钮在左。</li>
+<li>日期输入框打开弹窗时同步占位灰色状态。</li>
+</ul>
+<h3 id="641-icon">6.4.1 icon 按钮</h3>
+<table>
+<thead>
+<tr>
+<th>项</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>尺寸</td>
+<td>28×28，圆角 6px，无边框、透明底</td>
+</tr>
+<tr>
+<td>默认色</td>
+<td><code>#95a0b0</code></td>
+</tr>
+<tr>
+<td>Hover</td>
+<td>底色 <code>#fdecec</code>，图标色 <code>#e25151</code></td>
+</tr>
+<tr>
+<td>无障碍</td>
+<td><code>title</code> + <code>aria-label</code>（如「移除」），SVG <code>aria-hidden</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="642-v1170v1222">6.4.2 表单弹窗排布（v1.17.0，v1.22.2 渠道行与结算时间组件化）</h3>
+<ul>
+<li>输入框统一高度 <strong>38px</strong>，圆角/边框一致；表单内边距 20px、字段间距 15px / 18px，纵向节奏更紧凑。</li>
+<li><strong>结算时间 = 一个组件</strong>（v1.22.2）：外层一个 38px 高、单 1px 边框、6px 圆角的容器，内嵌两个<strong>无边框</strong>输入（开始日期占 44%，结束文本框占余下），「～」居中分隔；聚焦时容器整体高亮（蓝色边框 + 3px 光晕），内层输入不画自己的边框/轮廓。</li>
+<li><strong>佣金率</strong>：<code>%</code> 作为输入框<strong>内右侧后缀</strong>（绝对定位、灰色 <code>#98a2b3</code>），数值右对齐；不再把 <code>%</code> 放在输入框外侧远端。</li>
+<li><strong>5 个渠道费率并排一行</strong>（v1.22.2，原为两列换行、第 5 个独占一行）：<code>grid-template-columns:repeat(5,1fr)</code> 等分 520px 内容宽（每列约 96px），标签<strong>只显示渠道名</strong>——直播（默认）/ 短视频 / 商品卡 / 推荐卡 / 其他，<strong>不再写「佣金率」</strong>（<code>%</code> 后缀已表明含义），标签 12px 灰色、数值 14px，窄列内不换行、超出省略。</li>
+<li>顺序：商品卡 → 结算类型 → 结算时间 → 渠道费率行，标签与控件左对齐；弹窗标准宽 560px，规则弹窗高度由约 660px 降至约 494px。<br />
+  | 图标形状 | <strong>叉号 <code>×</code></strong>（两条描边交叉，非垃圾桶图标） |<br />
+  | 适用范围 | 带货商品清单行的「移除」（新增达人带货 / 编辑达人带货均一致） |</li>
+</ul>
+<h3 id="65">6.5 视觉规范</h3>
+<table>
+<thead>
+<tr>
+<th>项</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>主色</td>
+<td><code>#2878ff</code>（按钮/链接/选中态）</td>
+</tr>
+<tr>
+<td>页面底色 / 卡片</td>
+<td><code>#eef2f6</code> / <code>#fff</code>，边框 <code>#e5e9f0</code>，圆角 10px</td>
+</tr>
+<tr>
+<td>侧栏</td>
+<td><strong>浅色</strong>：白底 <code>#fff</code>、右侧 1px 分隔线 <code>#e5e9f0</code>，宽 208px；菜单文字 <code>#5b6675</code>、14px；hover <code>#f4f7fb</code> + 蓝字；<strong>选中项浅蓝底 <code>#eaf2ff</code> + 蓝字 <code>#2878ff</code> + 字重 600</strong>；禁用项 <code>#b7bfcc</code>；分组标题 <code>#9aa3af</code>；「待开发」角标 <code>#f7f9fc</code> 底 + <code>#a4adba</code> 字 + <code>#e5e9f0</code> 边框</td>
+</tr>
+<tr>
+<td>正文 / 次要文字</td>
+<td><code>#1f2937</code> / <code>#7d8797</code></td>
+</tr>
+<tr>
+<td>商品图</td>
+<td>列表 58×58、弹窗选中卡 48×48、带货清单 36×36，圆角 6px，<code>cover</code></td>
+</tr>
+<tr>
+<td>商品名称</td>
+<td>14px / 字重 650，最大宽 240px，允许换行</td>
+</tr>
+<tr>
+<td>次要信息（ID、上架时间）</td>
+<td>12px <code>#7d8797</code>，行高 1.6</td>
+</tr>
+<tr>
+<td>状态标签</td>
+<td>生效中 <code>#e9f8f1</code>/<code>#16a66a</code>；已结束 <code>#f0f2f5</code>/<code>#7d8797</code>，圆角 12px</td>
+</tr>
+<tr>
+<td>操作按钮</td>
+<td>文字按钮，常规 <code>#2878ff</code>，危险 <code>#e25151</code></td>
+</tr>
+<tr>
+<td>提示 toast</td>
+<td>页面<strong>水平居中</strong>（<code>left:50%</code> + <code>translateX(-50%)</code>），距顶部 72px；深色底 <code>#253145</code>、白字、圆角 7px；文案单行居中，超宽时最大宽度 <code>100vw - 48px</code> 并换行；1.6s 自动消失</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="8">8. 状态与数据规则</h2>
+<ul>
+<li>状态取值：<code>生效中</code> / <code>已结束</code>（无「草稿」「停用」）。</li>
+<li>状态计算：<code>结算结束时间 ≤ 当天</code> → 已结束；否则生效中。结束时间为「永久」时恒为生效中（仅商品维护页允许永久）。</li>
+<li>更新人 / 更新时间：任何一次保存（新增、编辑、结束结算、合作信息、带货商品）都会刷新为当前操作人与当前时间。</li>
+<li>有效期判定口径：订单<strong>创建时间</strong>落在 <code>结算开始时间 ≤ 订单创建时间 ≤ 结算结束时间</code> 内才参与结算。注意创建时间与支付时间是两个概念，此处<strong>以创建时间为准</strong>（下单时点），不以支付成功时点。</li>
+<li>列表排序（两个列表通用）：状态优先级 <code>生效中(0) &lt; 已结束(1)</code>，同级按更新时间倒序；因此「结束结算」后该行会自动下沉到已结束区。</li>
+<li>商品维护与达播结算互相独立：同一商品可同时存在于两条链路，有效期与佣金率分别维护。</li>
+</ul>
+<hr />
+<h2 id="9">9. 待开发 / 待确认</h2>
+<table>
+<thead>
+<tr>
+<th>项</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>特殊品牌结算</td>
+<td>页面待补充</td>
+<td>菜单已开放（路由 <code>#brand</code>）并显示占位页；业务规则与字段待产品补充</td>
+</tr>
+<tr>
+<td>店铺档案</td>
+<td>部分实现</td>
+<td>v1.25.0 已落地「店铺信息（只读）+ 达人结算范围」；仍需确认其余字段（店铺、开播日、达人佣金率、生效范围）与佣金率默认值来源</td>
+</tr>
+<tr>
+<td>批量导入解析</td>
+<td>部分待接入</td>
+<td>商品维护页的批量导入原型仅上传交互；达人带货的 CSV 导入已可真实解析。需后端统一支持 Excel 解析，并确认重复 ID 处理策略、错误行反馈方式（逐行报错/整体失败）</td>
+</tr>
+<tr>
+<td>数据导出</td>
+<td>待确认</td>
+<td>是否需要列表导出</td>
+</tr>
+<tr>
+<td>权限</td>
+<td>待确认</td>
+<td>财务管理员是否与运营分权（只读/可编辑）</td>
+</tr>
+<tr>
+<td>分页总数</td>
+<td>待确认</td>
+<td>前端分页 or 服务端分页（当前原型为前端分页，20 条/页）</td>
+</tr>
+<tr>
+<td>商品图来源</td>
+<td>待确认</td>
+<td>原型使用占位图，实际取抖店商品主图</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="10">10. 原型说明</h2>
+<ul>
+<li>文件：<code>qifei-settlement-demo.html</code>（与本文件同目录），双击浏览器打开即可，无需服务端。</li>
+<li>数据为内置 mock：3 个商品、7 个达人（小鹿同学 / 阿布Abu / 蒙蒙Mon / 糖糖Tanya / 豆豆Dodo / 琳琳Lynn / 小胖Pang，候选即订单已带货达人）、店铺开播日 <code>2026-10-01</code>、达人佣金率默认 <code>20%</code>。</li>
+<li>可直接体验：翻页、查询、新增/编辑、结束结算、批量导入弹窗与模板下载、达播展开、编辑达人带货（日期 + 带货商品）、复制。</li>
+<li><strong>版本标识</strong>：原型左侧菜单底部显示当前版本号（当前 <strong>v1.27.0</strong>），随发布版本同步更新。</li>
+</ul>
+<hr />
+<h2 id="11">11. 变更记录</h2>
+<blockquote>
+<p>版本说明：<strong>v1.0 为首个可交付基线版本（2026-10-23 定版）</strong>，<strong>对外版本号固定为 v1.0</strong>；原型内部的迭代编号（v1.25.0 ~ v1.28.4）仅用于过程追溯，统一记录在本表格中，<strong>v1.0 的全部内容 = 内部迭代 v1.28.4 的状态</strong>。后续若在基线之上做小修订，对外用补丁号记录（v1.0.1、v1.0.2…），并同时在内部迭代号上递增。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>版本</th>
+<th>日期</th>
+<th>变更内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>v1.0</strong>（对外基线，2026-10-23）</td>
+<td>2026-10-23</td>
+<td><strong>首个可交付基线定版</strong>：对外版本号统一为 <strong>v1.0</strong>，内容等同于内部迭代 <strong>v1.28.4</strong>（即截至定稿时的全部功能与交互，含祈飞结算商品维护 + 祈飞达播结算维护两条主线；内部迭代过程 v1.25.0 ~ v1.28.4 见下方各条目，仅作追溯用）。定版范围：商品维护（佣金规则模型 / 5 渠道费率 / 批量导入 / 结算规则编辑）、达播维护（达人结算范围三模式、达人通用佣金率、达人带货增改删、带货范围与特别佣金商品、结算时间段筛选、双页签）、店铺档案（店铺信息 + 达人结算范围只读联动）。侧栏版本标识同步显示为 v1.0</td>
+</tr>
+<tr>
+<td>v1.28.4</td>
+<td>2026-10-23</td>
+<td><strong>带货范围分段控件两处修复</strong>：① <strong>选项文字垂直居中</strong>——根因是 <code>.field label{display:block;...}</code>（特异性 0,1,1）覆盖了 <code>.radio{display:inline-flex;align-items:center}</code>（0,1,0），label 退化成块级、文字贴在 32px 选项顶部；同时 <code>#dmask .field label{font-size:12px}</code> 也压过了我设的 13px。修复方式为把选择器权重提到 <code>#dmask #dScope .radio</code>（2,1,0）并显式 <code>display:flex;align-items:center;justify-content:center;font-size:13px</code>，实测文字与选项中线偏移 0px；顺带给隐藏 radio 加 <code>pointer-events:none</code>（原先被 <code>#dRest .field input{width:100%}</code> 后置覆盖成 1440px 宽的透明热区）。② <strong>控件不再撑满字段宽度</strong>——由 v1.28.3 的 <code>flex:1 1 0</code> 通栏等分改回<strong>内容宽度</strong>（<code>inline-flex</code> + 选项 <code>padding:0 20px</code>，实测轨道宽 196px），<code>.scoperow</code> 同步由 <code>minmax(0,1fr) auto</code> 改回 <code>auto auto</code> 左对齐，「达人佣金率」紧随其右。侧栏版本 v1.28.3 → v1.28.4</td>
+</tr>
+<tr>
+<td>v1.28.3</td>
+<td>2026-10-23</td>
+<td><strong>达人带货弹窗两处调整</strong>：① <strong>「带货商品」区域标题固定为「特别佣金商品」</strong>——不再随带货范围动态切换（原「指定商品 → 带货商品 / 全店商品 → 特别佣金商品」），<code>#dGoodsLabel</code> / <code>#gGoodsLabel</code> 初始文案与 <code>applyDScope()/applyGScope()</code> 均直接写「特别佣金商品」；② <strong>带货范围分段控件改通栏等分</strong>——由原「内容宽度的小胶囊组」改为<strong>两个选项等分撑满字段宽度</strong>（<code>flex:1 1 0</code>、选项高 32px、轨道 <code>#eef1f6</code>），与表单其他字段视觉重量一致；同时<strong>去掉 radio 的 <code>:focus-visible</code> 蓝色描边</strong>（Chrome 对 radio/checkbox 点击后也会命中 <code>:focus-visible</code>，导致选中项常驻蓝框，观感差）。侧栏版本 v1.28.2 → v1.28.3</td>
+</tr>
+<tr>
+<td>v1.28.2</td>
+<td>2026-10-23</td>
+<td><strong>「新增/编辑达人带货」弹窗视觉优化</strong>：① <strong>带货范围由单选改分段控件</strong>——「指定商品 / 全店商品」收进一个胶囊组（外层 <code>#f1f4f9</code> 底 + 1px 边框、圆角 8px、内边距 3px，选项高 30px；未选中项 13px <code>#5b6675</code>，<strong>选中项白底 + <code>0 1px 3px</code> 轻投影 + 600 字重</strong>），radio 本体透明占位、由 <code>syncSegOn()</code> 给选中项 label 打 <code>on</code>；同时 <code>.scoperow</code> 由 <code>1fr 1fr</code> 改为 <code>auto auto</code> 左对齐、行距 28px，「达人佣金率」输入框收窄为 104px（原占满半行被拉宽）；② <strong>已选达人卡去灰块化</strong>——<code>.selcard</code> 由灰底 <code>#fbfcfe</code> 改白底 + 1px 边框、头像 48px → 40px、昵称 600 字重，卡片更紧；③ <strong>带货商品面板改白底细边框</strong>（原浅灰 <code>#f7f9fc</code> 与内部虚线空态框叠显脏），搜索输入框 <code>flex:1</code> 自适应；④ <strong>空态框收敛</strong>：最小高度 60px、12px 灰色居中（原 13px、padding 16px）；⑤ 弹窗统一加 <code>box-shadow:0 16px 44px rgba(12,18,29,.18)</code>、标题 15px、表单行距 16px、字段标签 12px。以上样式仅作用于 <code>#dmask</code>（新增）/ <code>#gmask</code>（编辑），商品维护弹窗不受影响。侧栏版本 v1.28.1 → v1.28.2</td>
+</tr>
+<tr>
+<td>v1.28.1</td>
+<td>2026-10-23</td>
+<td><strong>达播页两处视觉微调</strong>：① <strong>「＋ 新增达人带货 / ＋ 新增不结算达人」与页签同一行、靠右</strong>（v1.28.0 为页签下方独立一行，位置偏下且与页签脱节）——结构上 <code>#dTab2</code> 与 <code>#dbtnBar</code> 收进同一 flex 容器 <code>#dhead</code>（页签在左、按钮在右，容器高约 49px、底部 1px 分隔线，按钮底边与页签对齐、右边缘与卡片 18px 内边距对齐）；<strong>页签隐藏的模式（全部达人结算 / 指定达人结算）下容器切换为 <code>no-tabs</code></strong>：去掉分隔线、按钮单独显示在列表卡片右上角（上间距 14px，与 v1.28.0 一致）；<code>applyPartMode()</code> 同步切换该 class。② <strong>全店佣金率的追加片段 <code>+ m%～n%</code> 不再使用灰色小字</strong>——<code>.range-mini</code> 由 <code>color:#98a2b3;font-size:11px</code> 改为 <code>color:#1f2937;font-size:12px</code>，与相邻的「全店 18%」完全同色同字号（原灰色小字导致费率区间被弱化，实读性差）。侧栏版本 v1.28.0 → v1.28.1</td>
+</tr>
+<tr>
+<td>v1.28.0</td>
+<td>2026-10-23</td>
+<td><strong>达播页两处细节修正</strong>：① <strong>展开子表不再展示「全店商品 / 达人佣金率」占位行</strong>——全店达人的展开区只列<strong>特别佣金商品</strong>（费率 + 商品 ID），全店费率已由主行「全店 18% + 25%」完整表达，避免同一费率重复出现；无特别佣金商品时占位「暂无特别佣金商品，全店按达人佣金率结算」；② <strong>「＋ 新增达人带货 / ＋ 新增不结算达人」按钮由顶部工具栏下移至列表卡片内、页签正下方右侧</strong>（<code>#dbtnBar</code>，右对齐，与卡片内边距 18px 对齐），并<strong>随所选页签切换</strong>：<code>指定佣金结算</code> → 「＋ 新增达人带货」，<code>不结算达人</code> → 「＋ 新增不结算达人」；页签隐藏的模式下该行仅显示「＋ 新增达人带货」；顶部工具栏随之收敛为单行（结算时间段 + 商品筛选 + 达人筛选 + 查询）。侧栏版本 v1.27.0 → v1.28.0</td>
+</tr>
+<tr>
+<td>v1.27.0</td>
+<td>2026-10-23</td>
+<td><strong>祈飞达播结算维护 对齐「祈飞结算商品维护」：顶部结算时间段 + 列表字体统一 + 状态列移除</strong>：① <strong>顶部新增「结算时间段」组合日期选择器</strong>（与商品维护<strong>同款独立实例</strong>：触发器 <code>2026.10.01 ～ 2026.10.31</code> + 日历图标 + 下拉箭头，含快捷预设本月/上月/近7天/近30天/今年 + 浮层内起止日期 + 确定/取消；<strong>默认本月</strong>），下方达人列表只展示「结算开始～结束」与所选时段<strong>相交</strong>的记录（交集：<code>开始 ≤ 时段上界 且 (结束为空或 ≥ 时段下界)</code>）；与商品维护页的时间段<strong>相互独立</strong>；② <strong>达人、商品筛选上移至顶部工具栏</strong>（与结算时间段同排，尺寸/分隔线/清空按钮规范与商品维护页一致），并新增「＋ 新增达人带货 / ＋ 新增不结算达人」第二行按钮，原列表内工具栏删除；③ <strong>达人列表移除「状态」列与「状态下拉」</strong>（主表由 8 列→7 列、不结算达人表由 5 列→4 列，展开子表 colspan 8→7），时效有效性改由顶部结算时间段表达；④ <strong>列表字体统一至商品维护规范</strong>——根因 <code>#dlist&gt;.scroll&gt;table td</code> 选择器因 <code>#dwrapRate/#dwrapOff</code> 包裹未命中，单元格回落 body 16px（具体表现为「结算时间」列 16px），新增 <code>#dlist .scroll tbody td{font-size:12px}</code> 与 <code>#list .scroll tbody td</code> 对齐；⑤ <strong>全店达人佣金率展示改为「全店x% + m%～n%」</strong>（m%～n% 为该达人特别佣金商品费率区间，单条则 <code>+ m%</code>），取代原「全店 18% + N 指定」（<code>specialRange()</code> 辅助计算）。侧栏版本 v1.26.0 → v1.27.0</td>
+</tr>
+<tr>
+<td>v1.26.0</td>
+<td>2026-10-23</td>
+<td><strong>达播「新增/编辑达人带货」交互与视觉一致性专项</strong>：① <strong>达人选择重构为下拉搜索选择框</strong>（取代原「搜索框 + 搜索按钮」三步式）：弹窗打开即展示 <code>.tcombo</code> 输入框（占位「搜索达人昵称 / 抖音号」），聚焦/点击弹出候选浮层，<strong>候选数据来源 = 订单中已带货达人</strong>（原型内置 7 个：小鹿同学 / 阿布Abu / 蒙蒙Mon / 糖糖Tanya / 豆豆Dodo / 琳琳Lynn / 小胖Pang），候选行展示<strong>头像 + 昵称 + 抖音号</strong>，按昵称/抖音号模糊匹配，选中后展示达人信息卡并展开结算时间与商品区域、「重新选择」可退回；浮层 <code>position:fixed</code> 随滚动/缩放重定位并支持向上翻转；「新增不结算达人」同步改用该选择框；② <strong>「新增达人带货」按钮展示修复</strong>——原因继承 <code>display:flex</code> 缺 <code>align-items:center</code> 致文字顶对齐，现加 <code>#dadd,#daddOff{display:inline-flex;align-items:center;justify-content:center;white-space:nowrap}</code>，文字垂直居中；③ <strong>列表「编辑」操作字号 12px</strong>，与「祈飞结算商品维护」菜单操作列一致（新增 <code>#drows .link,#doffRows .link{font-size:12px}</code>）；④ <strong>结算时间组件与商品维护统一</strong>——新增/编辑达人带货、新增不结算达人的「结算时间」改为商品维护同款 <strong>38px 单边框 <code>.rangedate</code> 容器</strong>（聚焦高亮、内嵌无边框日期输入、<code>～</code> 居中）；⑤ <strong>带货范围选「全店商品」后，右侧同行维护「达人佣金率」</strong>（原「全店通用佣金率」改名，与带货范围同处 <code>.scoperow</code> 两列网格），下方区域标题「指定商品（可选，费率不同）」<strong>改名「特别佣金商品」</strong>；⑥ <strong>说明文案扩写</strong>为：「<strong>指定达人佣金率和特别佣金商品在下方维护，未指定的达人使用通用佣金率。结算优先级：指定达人指定商品特别佣金率&gt;指定达人佣金率&gt;达人通用佣金率</strong>」；校验文案同步「全店通用佣金率需在 0-100 之间」→「达人佣金率需在 0-100 之间」。侧栏版本 v1.25.0 → v1.26.0</td>
+</tr>
+<tr>
+<td>v1.25.0</td>
+<td>2026-10-23</td>
+<td><strong>「达人结算范围」迁移到「店铺档案」，达播页改为只读查看</strong>：① 侧栏「店铺档案」菜单<strong>取消置灰与「待开发」角标</strong>，正式开放（路由 <code>#store</code>），页面含「店铺信息（店铺名称／所属平台／开播日，只读）」+「达人结算范围」三个单选 + 说明文案，切换即时生效、无需保存；② 达播页顶部「达人结算范围」由三单选改为<strong>纯查看</strong>：模式名文本 + 灰色小字「在「店铺档案」中设置」，进入页面时重新读取店铺设置并联动达人通用佣金率显隐与模式③双页签；③ 达人通用佣金率下的蓝色提示<strong>统一为一条</strong>（不再按模式切换）：「<strong>指定达人佣金率的达人和商品在下方维护，未指定的达人使用通用佣金率</strong>」；④ 「历史变更记录」按钮字号 16px → <strong>12px</strong>（与商品维护通用佣金率一致）；PRD 章节调整：新增第 6 节「店铺档案」，原 6~10 节顺延为 7~11；侧栏版本 v1.24.0 → v1.25.0</td>
+</tr>
+<tr>
+<td>v1.24.0</td>
+<td>2026-10-23</td>
+<td><strong>达播店铺级设置按业务口径重做</strong>：① 「参与计算范围」→「<strong>达人结算范围</strong>」，选项改为 <strong>全部达人结算 / 指定达人结算 / 指定达人不结算，其余结算</strong>；② <strong>移除「指定达人名单」</strong>（chips 增删）与「灰显 + 不参与计算标签」；③ 新增「<strong>达人通用佣金率</strong>」配置——单个数值、不按渠道拆分，仅在模式①③展示，交互与商品维护的通用佣金率一致（历史变更记录 + 生效日期变更弹窗），作为未配置指定佣金率时的<strong>保底费率</strong>（全店通用佣金率输入框默认值也取此值）；④ 列表按模式变化：模式①「只展示指定佣金率的达人和商品，其余按通用佣金率结算」，模式②「仅列表内达人和商品结算」，模式③「拆成两个页签两张表」——<strong>指定佣金结算</strong>（原达人带货表 + <code>＋ 新增达人带货</code>）与 <strong>不结算达人</strong>（新表：达人信息/结算时间/状态/更新信息/操作 + <code>＋ 新增不结算达人</code>）；⑤ 新增「新增/编辑不结算达人」弹窗（达人搜索 + 结算时间，无商品与费率）；侧栏版本 v1.23.0 → v1.24.0</td>
+</tr>
+<tr>
+<td>v1.23.0</td>
+<td>2026-10-23</td>
+<td><strong>达播模块补全两类结算场景</strong>：① <strong>达人带货范围</strong>——新增/编辑达人带货弹窗新增「带货范围」单选（<strong>指定商品 / 全店商品</strong>，默认指定商品）；「全店商品」展开「全店通用佣金率」输入（0–100，框内 <code>%</code> 后缀），带货商品区域变为「指定商品（可选，费率不同）」且<strong>允许空清单</strong>，清单内商品费率覆盖全店通用值；列表「商品数」列全店达人显示 <code>全店</code>（+N 指定）、「佣金率」列显示 <code>全店 18%</code>（+N 指定），展开子表首行固定「全店商品 / 通用佣金率」；商品筛选下全店达人恒匹配。② <strong>店铺级「参与计算范围」</strong>——达播页顶部新增设置卡，三种模式：<strong>全部达人参与（默认）/ 仅指定达人参与（白名单）/ 指定达人不参与、其余参与（黑名单）</strong>；非「全部参与」时展开指定达人名单（chip 增删 + 昵称/抖音号搜索添加）；不参与计算的达人行整体灰显并在昵称旁标注「不参与计算」。达播侧佣金率保持<strong>单个数值</strong>，不按渠道拆分（与商品维护的 5 渠道模型相互独立）；侧栏版本 v1.22.3 → v1.23.0</td>
+</tr>
+<tr>
+<td>v1.22.3</td>
+<td>2026-10-22</td>
+<td><strong>两处文案精简</strong>：① 展开子表的 5 个渠道列表头去掉「佣金率」三字，只显示渠道名（直播（默认）/ 短视频 / 商品卡 / 推荐卡 / 其他），表头由两行变一行、高度约 58px → 41px，列宽仍由 <code>alignSub()</code> 动态计算（「状态」与主表「更新信息」偏差 1px、「操作」偏差 0px）；② 通用佣金率卡的「历史变更记录」按钮字号 16px（继承 body）→ <strong>12px</strong>，与渠道数值同级偏小；侧栏版本 v1.22.2 → v1.22.3</td>
+</tr>
+<tr>
+<td>v1.22.2</td>
+<td>2026-10-22</td>
+<td><strong>新增/编辑规则弹窗表单紧凑化</strong>：① <strong>结算时间合并为一个组件</strong>——外层 38px 单边框容器内嵌两个无边框日期输入（开始 44% + 结束余下），「～」居中分隔，聚焦时容器整体高亮（原为两个独立边框输入框，视觉上是两个字段）；② <strong>5 个渠道费率并排一行</strong>（<code>repeat(5,1fr)</code> 均分，每列约 96px），原为两列换行、第 5 个独占一行；③ 通道标签<strong>只显示渠道名</strong>（直播（默认）/ 短视频 / 商品卡 / 推荐卡 / 其他），<strong>去掉「佣金率」三字</strong>，标签 12px、数值 14px；④ 「不参与结算」类型下整行隐藏（原逐字段隐藏），规则弹窗高度约 660px → 494px；新增商品弹窗同步生效；侧栏版本 v1.22.1 → v1.22.2</td>
+</tr>
+<tr>
+<td>v1.22.1</td>
+<td>2026-10-22</td>
+<td><strong>通用佣金率卡片说明文案合并</strong>：原两条独立说明（「未配置指定佣金规则的商品范围，按通用佣金率结算」+「渠道对应抖店订单的「流量体裁」；抖店新增的流量体裁默认按「直播（默认）」佣金率结算」）合并为单条：「<strong>未配置指定结算规则的商品按通用佣金率结算。渠道对应抖店订单的「流量体裁」字段，其他未支持设置的流量体裁按「直播（默认）」佣金率结算。</strong>」；侧栏版本 v1.22.0 → v1.22.1</td>
+</tr>
+<tr>
+<td>v1.22.0</td>
+<td>2026-10-22</td>
+<td><strong>商品维护渠道由 2 个扩展为 5 个（对齐抖店「流量体裁」）</strong>：① 渠道固定为 <strong>直播（默认）、短视频、商品卡、推荐卡、其他</strong>，展示顺序即此顺序；「直播」改名「<strong>直播（默认）</strong>」——抖店后续新增流量体裁未及时同步时，<strong>默认按直播（默认）佣金率结算</strong>；② 通用佣金率卡片并列展示 5 个渠道值并新增第二条说明（渠道=抖店流量体裁、未识别体裁按默认渠道结算），历史变更记录表由 4 列扩为 <strong>7 列</strong>，变更弹窗 5 个渠道输入；③ 结算规则每个渠道独立费率、独立留空取通用值，「与通用一致不新增」的判定改为 <strong>5 个渠道全部一致</strong>，剔除规则仍整商品全渠道 0%；④ 主列表「佣金率」列按渠道片段展示并允许换行；展开子表由 5 列扩为 <strong>8 列</strong>（结算时间 + 5 渠道佣金率 + 状态 + 操作），<code>alignSub()</code> 重写为 6+2 列宽策略（渠道列均分余量、状态/操作仍对齐主表）；⑤ 新增/编辑规则弹窗由 2 个费率字段扩为 <strong>5 个</strong>（两列换行，第 5 个独占一行），费率输入框样式改用 <code>.ratefield</code> 类选择器；⑥ 导入模版扩为 8 列（商品ID/结算开始/结束/直播/短视频/商品卡/推荐卡/其他佣金率）；校验文案按渠道名动态生成（如「短视频佣金率需在 0-100 之间」）；侧栏版本 v1.21.0 → v1.22.0</td>
+</tr>
+<tr>
+<td>v1.21.0</td>
+<td>2026-10-22</td>
+<td><strong>两个菜单顶部筛选区样式统一</strong>：① 控件尺寸统一——高度 36px、圆角 6px、左右内边距 11px、字号 <strong>13px</strong>（原商品维护页日期触发器 13px、同排输入框/按钮却 16px，同排字号不一致；现 <code>.toolbar input/select/button</code> 与 <code>.range-trigger</code> 全部 13px，与 <code>.flabel</code> 标签一致）；② 商品维护页的「商品」关键词补上<strong>标签 + 1px 竖分隔线</strong>（与达播页「商品 ｜ 达人」结构对齐，原先为裸输入框）；③ 关键词输入框统一 <strong>232px</strong> 宽（达播「达人」216px），并统一带右侧「<strong>×</strong>」清空按钮（商品维护页原无清空能力，<code>syncPfClr()</code> 改为遍历所有 <code>.pfilter</code> 通用处理）；④ 两页控件实测几何完全一致（13px / 36px / 6px / top 83，标签 13px / 18px / top 92）；侧栏版本 v1.20.0 → v1.21.0</td>
+</tr>
+<tr>
+<td>v1.20.0</td>
+<td>2026-10-22</td>
+<td><strong>达播新增/编辑弹窗「结算时间」合并为一行</strong>：原「结算开始日期」「结算结束日期」两个独立字段（各带标签、两列网格排布）合并为一个「结算时间」字段——同一行内 <code>开始 ～ 结束</code> 两个等宽输入，结构与商品维护弹窗的「结算时间」完全一致（<code>start ～ end</code>，<code>flex:1 1 0</code> 等宽、<code>～</code> 垂直居中、36px 高、<code>flex-wrap:nowrap</code> 不换行）；<code>#dmask</code> 的 <code>.drest-grid</code> 由两列改单列、<code>#gmask</code> 移除 <code>.gdates</code> 两列包裹层；结束框留空仍为「长期有效」（框内提示），必填与先后顺序校验（结束不得早于开始）不变；侧栏版本 v1.19.0 → v1.20.0</td>
+</tr>
+<tr>
+<td>v1.19.0</td>
+<td>2026-10-22</td>
+<td><strong>达播列表新增「商品筛选」</strong>：查询区在达人行首部新增带「商品」标签的输入框（占位「请输入商品 ID / 商品名称」），按商品 ID/名称模糊匹配，<strong>只保留带货该商品的达人</strong>，与「达人」「状态」为与关系；输入即筛、回车生效、带「×」一键清空；筛选态下「商品数」显示 <code>匹配数/总数</code>（如 <code>1/2</code>）、「佣金率」只统计匹配商品、展开子表只列匹配商品并高亮、底部提示「仅展示匹配「关键词」的商品，该达人共 N 个带货商品」、空态文案随关键词变化；同时把商品匹配从「达人输入框」拆出（达人框只匹配昵称/抖音号），达人框改为输入即筛（与商品框一致）；侧栏版本 v1.18.0 → v1.19.0</td>
+</tr>
+<tr>
+<td>v1.18.0</td>
+<td>2026-10-22</td>
+<td><strong>术语统一「佣金率」+ 结算时间段组合选择器 + 文案精简</strong>：① 「佣金服务费」在商品维护与达播两个菜单中<strong>全部改称「佣金率」</strong>（原型 32 处、PRD 86 处；术语表两条合并为一条，注明 v1.4 曾改名、v1.18.0 回归统一）；② 顶部「结算时间段」由两个并排独立日期框改为<strong>一个组合日期选择器</strong>：触发器展示 <code>2026.10.01 ～ 2026.10.31</code> + 日历图标 + 下拉箭头，点击展开浮层，内含<strong>快捷预设</strong>（本月/上月/近7天/近30天/今年，选中态高亮）、<strong>浮层内并排起止日期</strong>（<code>rgs</code>/<code>rge</code>）、<strong>确定/取消</strong>（确定才写回并刷新列表与卡片，取消丢弃改动），点浮层外或 <code>Esc</code> 关闭；③ 卡片说明文案精简为「未配置指定佣金规则的商品范围，按通用佣金率结算」；④ 历史变更记录弹窗底部按钮「变更通用佣金率」→「<strong>新增变更</strong>」，并修正其与「关闭」的对齐（改为右侧并排，「新增变更」在「关闭」左侧）；侧栏版本 v1.17.0 → v1.18.0</td>
+</tr>
+<tr>
+<td>v1.17.0</td>
+<td>2026-10-22</td>
+<td><strong>新增/编辑弹窗表单排布优化</strong>：① 弹窗宽度统一 560px、表单内边距 20px、字段间距 15/18px、输入框统一 38px 高；② 「结算时间」两输入改为<strong>等宽</strong>（<code>flex:1 1 0</code>）、「～」垂直居中，结束框占位「不填视为长期有效」与开始框同宽（原一宽一窄）；③ 佣金率的 <code>%</code> 由<strong>输入框外侧远端</strong>改为<strong>框内右侧后缀</strong>（绝对定位、灰色），数值右对齐，视觉更整体；作用域限定 <code>#mask</code> / <code>#rmask</code> 与四个费率字段，不影响其他弹窗；侧栏版本 v1.16.0 → v1.17.0</td>
+</tr>
+<tr>
+<td>v1.16.0</td>
+<td>2026-10-22</td>
+<td><strong>通用佣金率随所选时间段联动</strong>：修复「切换结算时间段后商品列表变化、但顶部通用费率卡片不变」的问题——新增 <code>renderDefaultCard()</code>，按所选时间段收集生效的通用费率记录（各记录生效区间 = [本条 start, 下一条 start − 1]，与查询范围求交），区间内单一费率直显、跨费率变更显示区间（如 9 月 <code>18%</code>、10 月 <code>20%</code>、9~10 月 <code>18%～20%</code>）；<code>draw()</code> 开头调用，切换时间段即刷新；<code>fillDefaultRate()</code> 仅负责填充编辑弹窗输入（仍取当前生效值）；卡片说明文案改为「数值按所选时间段展示（跨费率变更时显示区间）」；侧栏版本 v1.15.0 → v1.16.0</td>
+</tr>
+<tr>
+<td>v1.15.0</td>
+<td>2026-10-22</td>
+<td><strong>列宽精确布局 + 操作列左对齐 + 移除弹窗说明文案</strong>：① 新增 <code>layoutMain()</code>，按表格实际宽度以 JS 精确计算主表 6 列像素宽（展开 44px / 商品信息 28% 最小 270px / 结算类型 24% / 佣金率 21% / 更新信息 12% / 操作 15% 最小 140px），替代不稳定的 CSS calc 百分比；② 操作列由右对齐改为<strong>左对齐</strong>（主行与子表一致），操作文字从操作列左缘开始、右侧自然留白（不再贴右边），主行「新增结算规则」与子表「编辑」左缘对齐（实测偏差 0px，按钮距表格右缘约 43px）；③ 删除「新增商品」「新增/编辑结算规则」弹窗底部的「留空表示按通用佣金率结算；两个渠道都与通用佣金率一致时不保存该规则」说明文案（费率类）；「不参与结算」类型的剔除提示保留；侧栏版本 v1.14.0 → v1.15.0</td>
+</tr>
+<tr>
+<td>v1.14.0</td>
+<td>2026-10-22</td>
+<td><strong>剔除按 0% 计入区间 + 列宽/操作列/子表列对齐</strong>：① 主行「佣金率」聚合区间时，剔除（不参与结算）规则按 <code>0%</code> 计入，含剔除规则的商品区间下界为 <code>0%</code>（如 15% / 20% / 剔除 0% → <code>直播 0%～20%</code>），全部剔除 → <code>0%</code>；② 单元格水平内边距 9px → 12px（改善字段列间隙），列宽改为按 <code>(100% - 44px)</code> 比例分配（商品信息 27% / 结算类型 24% / 佣金率 22% / 更新信息 13% / 操作 14%）；③ 操作列右对齐但右内边距设为 26px，<strong>不再贴右侧边</strong>，主行「新增结算规则」与子表「编辑」右缘对齐；④ <code>alignSub()</code> 按主行真实边界动态设定子表 5 列宽度，使「状态」列对齐「更新信息」列、「操作」列对齐「操作」列，<code>draw()</code> 末尾用 <code>setTimeout(30)</code> 二次校正（实测文字偏差 ≤0.5px、操作按钮右缘偏差 0px）；侧栏版本 v1.13.0 → v1.14.0</td>
+</tr>
+<tr>
+<td>v1.13.0</td>
+<td>2026-10-22</td>
+<td><strong>商品子表去掉「结束结算」+ 操作列对齐</strong>：① 商品维护页展开子表的操作列移除「结束结算」按钮（连同 <code>data-rstop</code> 事件绑定），只保留「编辑」，规则到期改由「编辑」修改结算结束时间；<code>openStop</code>/<code>confirmStop</code> 与 <code>#stopMask</code> 现仅服务达播页；② 操作列右对齐——新增 <code>#list .scroll th:last-child</code>、<code>#list .scroll tr.main&gt;td:last-child</code>、<code>#list .scroll .subtable td:last-child</code> 三条 <code>text-align:right</code>（<code>.subtable td.gt-empty</code> 保持左对齐），主行「新增结算规则」与子表「编辑」贴右缘，实测主行与子表操作列右缘偏差 0px；③ QA 移除已失效的 <code>stop</code> 场景（19 → 18 场景）；侧栏版本 v1.12.0 → v1.13.0</td>
+</tr>
+<tr>
+<td>v1.12.0</td>
+<td>2026-10-22</td>
+<td><strong>不参与结算佣金率显 0%</strong>：① 展开子表中剔除规则（不参与结算）的「直播佣金率」「商品卡佣金率」由 <code>—</code> 改为 <code>0%</code>（剔除即佣金率为 0）；② 主行纯剔除（整段不参与结算、无通用兜底）时佣金率由「不参与结算」文本改为 <code>0%</code>；侧栏版本 v1.11.0 → v1.12.0</td>
+</tr>
+<tr>
+<td>v1.11.0</td>
+<td>2026-10-22</td>
+<td><strong>商品主行去掉「结算时间」列</strong>：① 表头与主行移除 <code>结算时间</code>（原 150px 列），商品维护列表由 7 列改为 <strong>6 列</strong>（展开 44px / 商品信息 28% 最小 272px / 结算类型 110px / 佣金率 28% / 更新信息 130px / 操作 200px）；② <code>draw()</code> 删除主行 <code>stime</code> 计算与 <code>&lt;span class="trange"&gt;</code> 单元格，展开子表 colspan 7→6、<code>alignSub()</code> 取 <code>children[5]</code>（操作列）；③ 子表内每行规则的「结算时间」保留不变；侧栏版本 v1.10.0 → v1.11.0</td>
+</tr>
+<tr>
+<td>v1.10.0</td>
+<td>2026-10-22</td>
+<td><strong>主行字段按时间段聚合（通用 + 指定都要展示）</strong>：修复「部分期间通用 + 部分期间指定」商品只展示指定规则数据的问题——① <code>结算类型</code>：规则覆盖段合并后与查询范围求差集得通用期间，存在空隙即追加「通用佣金结算」青色标签（新增 <code>.tag.gen</code>），与「指定佣金结算 / 不参与结算」并列；② <code>佣金率</code>：收集时间段内出现过的全部费率（通用期间按期间首日取通用值 + 各指定规则费率，留空取规则生效日通用值），同渠道单值直显、多值显升序区间（如 <code>直播 20%～25% / 商品卡 20%</code>），全为剔除规则才显示「不参与结算」；③ <code>结算时间</code>：改为整体结算跨度（各规则实际起止与通用期间并集，不按查询范围裁剪），任一规则未填结束 → <code>～永久</code>；④ 「仅通用不展示」收紧为<strong>全部期间均通用才不展示</strong>；新增 <code>dShift()</code> 日期工具；侧栏版本 v1.9.0 → v1.10.0</td>
+</tr>
+<tr>
+<td>v1.9.0</td>
+<td>2026-10-22</td>
+<td><strong>商品列表回退为「商品级 + 展开子表」</strong>：① 商品维护列表由 v1.7.0 起的「规则级平铺」回退为 v1.6.0 形态——<strong>一行一个商品</strong>（7 列：展开 44px / 商品信息 / 结算类型 / 佣金率 / 结算时间 / 更新信息 / 操作），同一商品命中多条规则时「结算类型」以并列标签展示、「佣金率 / 结算时间」取开始时间最新的一条；② 每行首列恢复 44px 展开按钮，点开在下方展开<strong>该商品全部历史结算记录</strong>子表（5 列：结算时间 / 直播 / 商品卡 / 状态 / 操作），子表不受顶部「结算时间段」筛选约束，便于回看任意历史时段；新增 <code>pExpanded</code>（展开状态记忆）与 <code>alignSub()</code>（子表左缘对齐商品信息列、右缘对齐操作列，1280 实测左偏约 33px、右偏 0）；③ 「仅通用不展示」「更新信息」「每页 20 条」等规则不变</td>
+</tr>
+<tr>
+<td>v1.7.0</td>
+<td>2026-10-22</td>
+<td><strong>结算时间段筛选 + 规则级列表 + 通用费率编辑并入历史弹窗</strong>：① 顶部「结算时间点」改为「结算时间段」（<code>开始 ～ 结束</code> 两个日期构成时间范围，默认 2026-09-01～2026-12-31），商品搜索与查询按钮左移，仍无状态筛选；② 通用佣金率卡片去掉「编辑」按钮，仅保留「历史变更记录」弹窗，编辑入口内置为弹窗内「变更通用佣金率」按钮（展开生效日期/直播/商品卡表单）；保存采用<strong>截断语义</strong>——删除所有「生效日期 ≥ 新生效日期」的既有记录再追加，即「修改生效日期至今」的通用费率；③ 商品列表取消展开子表，改为<strong>规则级多行</strong>（一行 = 一条规则，6 列：商品信息 / 结算类型 / 佣金率 / 结算时间 / 更新信息 / 操作），同一商品多条规则都展示、仅按通用结算的商品在所选时间段内不展示；排序改为整体更新时间倒序 + 同商品规则开始时间倒序；④ 操作列含「新增结算规则（仅商品首行）/ 编辑 / 结束结算」；<code>draw()</code> 按规则枚举、<code>ruleRateText()</code> 取规则生效日通用费率</td>
+</tr>
+<tr>
+<td>v1.6.0</td>
+<td>2026-10-22</td>
+<td><strong>历史时间点查询 + 通用费率记录化 + 商品列表重构</strong>：① 商品维护页顶部新增「结算时间点」选择器（默认今天，可回今天），商品搜索与「批量导入 / 新增商品」上移到顶部工具条，<strong>移除状态筛选</strong>；② 通用佣金率由单一标量改为<strong>记录链</strong>（<code>defaultRates</code>，每条含生效日期 / 直播 / 商品卡 / 更新人 / 更新时间），编辑弹窗新增「生效日期」、保存即新增记录，卡片新增「变更记录」弹窗按生效日期倒序展示历史；③ 商品列表去掉「佣金规则记录」「状态」两列，「当前佣金率」更名「佣金率」，新增「结算时间」列（7 列）——列表按所选时间点计算 <code>佣金率 / 结算类型 / 结算时间</code>，渠道留空取<strong>该时间点</strong>的通用费率；④ 展开子表定位为「该商品全部历史结算记录」，留空渠道的灰色数字取该规则生效日的通用费率；<code>alignSub</code> 适配 7 列（子表左缘对齐商品信息、操作列对齐操作列）</td>
+</tr>
+<tr>
+<td>v1.5.0</td>
+<td>2026-10-22</td>
+<td>① 列表「更新人」+「更新时间」两列合并为「更新信息」单列：上行更新人、下行更新时间（11px 灰色），商品维护与达播两页一致；② 统一两个结算页面的列表展示：列结构（8 列、更新信息 130px、操作 96px）、单元格内边距（11px 9px）、字号（12px）对齐；并将数字列字重统一扁平化（<code>.count</code>/<code>.range</code> 在 v1.4.5 仅作用于 <code>#list</code>，本期扩展至 <code>#dlist</code>——达播的「商品数」「佣金率」也改为 12px/400 常规，与商品维护的「佣金规则记录」「当前佣金率」一致）</td>
+</tr>
+<tr>
+<td>v1.4.5</td>
+<td>2026-10-22</td>
+<td>列表排版统一（商品维护页）：<code>佣金规则记录</code>、<code>当前佣金率</code> 去掉加粗与放大（原 <code>.count</code> 600 字重、<code>.range</code> 650 字重/14px 且有 13px 行内样式），改为与 <code>更新人</code> 一致的 12px 常规字重；改动用 <code>#list</code> 作用域限定（达播列表的佣金率/商品数当时保留原样，于 v1.5.0 一并统一）</td>
+</tr>
+<tr>
+<td>v1.4.4</td>
+<td>2026-10-22</td>
+<td>「结束时间」提示改为<strong>框内占位文案</strong>：去掉日期框右侧的灰字「结束时间留空 = 长期」，改为在结束日期框内显示「不填视为长期有效」（有值时为原生日期控件，清空后自动退回占位文案）。覆盖商品维护「新增商品」「新增/编辑结算规则」与达播「新增/编辑达人带货」四处；同时把达播的结算结束日期由必填改为<strong>可留空 = 长期</strong>（去掉「请填写结算结束日期」校验，列表显示 <code>2026.10.01～永久</code>、状态为生效中）。「结束结算」弹窗的结算结束时间是终止日期，仍为必填、不加该提示</td>
+</tr>
+<tr>
+<td>v1.4.3</td>
+<td>2026-10-21</td>
+<td>「结算类型」列左移（用户反馈字段太靠右）：<code>商品信息</code> 列由自适应改为 24.5%（最小 272px）、<code>当前佣金率</code> 列定宽 25%，余量由两列分摊——1440 下 <code>结算类型</code> 左移约 79px，1920 下也不会出现单列被撑到 700px+ 的空白；同时把子表对齐算法改为「容器 td 内边距归零 + 表格 margin 左偏移」，修掉子表 <code>结算时间</code> 比主表 <code>商品信息</code> 右偏 9px 的问题（1440/1366/1280/1180 实测偏差 ≤0.5px）</td>
+</tr>
+<tr>
+<td>v1.4.2</td>
+<td>2026-10-21</td>
+<td>「新增商品」「新增/编辑结算规则」弹窗把「结算开始时间」「结算结束时间」合并为一行「结算时间」：两个日期控件并排、以「～」分隔，右侧提示「结束时间留空 = 长期」；校验文案改为「请填写结算时间」</td>
+</tr>
+<tr>
+<td>v1.4.1</td>
+<td>2026-10-21</td>
+<td>数值展示简化：渠道费率留空时子表只显示数字（<code>20%</code>，仍用灰色区分「取通用值」），列表「当前佣金率」未命中规则时由 <code>通用 20% / 通用 20%</code> 改为 <code>20% / 20%</code></td>
+</tr>
+<tr>
+<td>v1.4</td>
+<td>2026-10-21</td>
+<td>商品维护菜单文案与字段调整：① 顶部说明改为「未配置指定佣金规则的商品范围，按通用佣金率结算」；② 列表新增「结算类型」列（指定佣金结算 / 不参与结算，取当前命中的规则类型）；③「指定佣金率规则条数」改名「佣金规则记录」；④ 本菜单内「佣金率」全部改为「佣金率」；⑤ 子表列按主表对齐（结算时间→商品信息、状态→状态、操作→操作）；⑥ 弹窗「规则类型」Tab 改为「结算类型」单选（指定佣金结算 / 不参与结算）</td>
+</tr>
+<tr>
+<td>v1.3.2</td>
+<td>2026-10-21</td>
+<td>列表交互调整：删除展开区内「结算规则 ＋ 新增结算规则」标题行，子表紧接主行展示；「新增结算规则」上移为主行新增的「操作」列（表格 7 列 → 8 列，子表 colspan 同步）；该表单元格内边距收紧至 11px、操作列固定 104px，「商品信息」允许名称换行，1280 窗口宽度下 8 列完整可见（更窄时表格区横向滚动）</td>
+</tr>
+<tr>
+<td>v1.3.1</td>
+<td>2026-10-21</td>
+<td>修复新增商品弹窗 DOM 多一层 <code>&lt;/div&gt;</code> 导致底部「取消/保存」跑到模态框外、浮在列表上的问题；结束结算弹窗商品卡中「结算时间」改为独立一行（原挤在右侧被压成「2026.10.01～永/久」）；批量导入「模版字段」说明补齐直播/商品卡佣金率并换行排版。新增自动质检脚本 <code>qifei-qa.py</code>（结构 + 逐弹窗运行时检查 + 截图）</td>
+</tr>
+<tr>
+<td>v1.3</td>
+<td>2026-10-21</td>
+<td>新增规则类型「不参与结算（剔除）」：命中即不结算且优先级最高，只填结算时间（留空=长期），整品剔除（两渠道都不结算）；弹窗加类型切换（剔除时隐藏费率、跳过「与通用一致」校验）；列表当前佣金率显示「不参与结算」，子表带灰色标签</td>
+</tr>
+<tr>
+<td>v1.2</td>
+<td>2026-10-21</td>
+<td>规则模型重构：一条规则 = 结算时间段 + 直播费率 + 商品卡费率（不再按渠道拆条）；新增商品一次只填一条规则且费率默认带出通用佣金率，与通用完全一致时不新增；列表改为「商品信息 / 规则条数 / 当前佣金率 / 状态 / 更新人 / 更新时间」（主行无操作列），展开子表按结算时间倒序展示并支持编辑、结束结算；导入模板字段增加直播/商品卡佣金率</td>
+</tr>
+<tr>
+<td>v1.1.1</td>
+<td>2026-10-21</td>
+<td>交互修正：① 移除「祈飞结算商品范围」全店/指定开关（与通用费率语义重叠）；② 「统一佣金率（兜底）」更名「通用佣金率」，页面只读展示 + 弹窗编辑，不再在页面上直接放输入框；③ 新增/编辑商品弹窗去掉与商品卡重复的「上架时间」只读字段</td>
+</tr>
+<tr>
+<td>v1.1</td>
+<td>2026-10-21</td>
+<td>通用结算规则模型：新增「统一佣金率（兜底）」配置（直播 / 商品卡）；商品的「结算开始/结束日期 + 单一佣金率」升级为「渠道 × 结算时间段 × 佣金率」多规则；列表新增结算渠道、佣金率两列与展开子表；唯一性校验（同商品同渠道同时间段不允许两条规则）；结束结算对全部未结束规则生效；规则变更后重算</td>
+</tr>
+<tr>
+<td>v1.0.2</td>
+<td>2026-10-20</td>
+<td>「特殊品牌结算」菜单由置灰「待开发」改为可点击（路由 <code>#brand</code>，去掉待开发角标），页面先放「功能建设中，敬请期待」占位</td>
+</tr>
+<tr>
+<td>v1.0.1</td>
+<td>2026-10-20</td>
+<td>祈飞达播结算维护列表工具条移除「批量导入」按钮（列表级导入取消，导入能力保留在新增/编辑达人带货弹窗的「批量导入」页签）</td>
+</tr>
+<tr>
+<td>v1.0</td>
+<td>2026-10-20</td>
+<td><strong>首个可交付版本基线</strong>：祈飞结算商品维护 + 祈飞达播结算维护两个菜单完整可用（列表 / 分页 / 排序 / 展开明细 / 新增 / 编辑 / 结束结算 / 批量导入 / 复制）；达人编辑入口合并为单个「编辑」弹窗；侧栏浅色主题；全局提示居中；原型侧栏底部显示版本号 v1.0</td>
+</tr>
+<tr>
+<td><strong>—— 以下为 v1.0 基线前的内部迭代编号，仅作历史留档 ——</strong></td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>v1.9</td>
+<td>2026-10-20</td>
+<td>修复新增达人带货弹窗 DOM 少一层 <code>&lt;/div&gt;</code> 导致底部操作区被挤进表单栅格（按钮居中、分割线断裂）</td>
+</tr>
+<tr>
+<td>v1.8</td>
+<td>2026-10-20</td>
+<td>带货商品区域改为浅灰底色面板；已选商品行的佣金率输入前增加「佣金率」文本</td>
+</tr>
+<tr>
+<td>v1.7</td>
+<td>2026-10-20</td>
+<td>带货商品页签右移到标题同行（批量导入在左、手动添加在右，默认手动添加）；手动添加改为「输入带货商品ID + 搜索 → 结果选择 → 落到清单行（可改佣金率/移除）」</td>
+</tr>
+<tr>
+<td>v1.6</td>
+<td>2026-10-20</td>
+<td>新增达人带货的达人选择改为「搜索 → 结果列表 → 点选择」三步；支持多条命中，无结果时列表内提示</td>
+</tr>
+<tr>
+<td>v1.5</td>
+<td>2026-10-20</td>
+<td>编辑合作信息、编辑带货商品两个弹窗的达人由「只读输入框」改为达人信息卡（头像 + 昵称 + 抖音号 + 复制）</td>
+</tr>
+<tr>
+<td>v1.4</td>
+<td>2026-10-20</td>
+<td>新增达人带货弹窗改为渐进式展示：未选达人时只显示抖音号搜索框，选中后才展开结算日期与带货商品</td>
+</tr>
+<tr>
+<td>v1.3</td>
+<td>2026-10-20</td>
+<td>新增达人带货弹窗重构：达人改为「搜索→信息卡→重新选择」；带货商品拆为「手动添加（一行一商品）/ 批量导入（Excel + 模板：商品ID、佣金率）」两个页签</td>
+</tr>
+<tr>
+<td>v1.2</td>
+<td>2026-10-20</td>
+<td>结算有效期判定口径的文案由「订单支付日期」改为「订单创建时间」（创建 ≠ 支付）</td>
+</tr>
+<tr>
+<td>v1.1</td>
+<td>2026-10-20</td>
+<td>两个列表新增排序规则：状态优先（生效中在前、已结束在后），同级按更新时间倒序</td>
+</tr>
+<tr>
+<td>v0.1</td>
+<td>2026-10-20</td>
+<td>首版草稿，沉淀已有原型的两个菜单完整逻辑（基线发布前的迭代记录）</td>
+</tr>
+<tr>
+<td>—</td>
+<td>2026-10-20</td>
+<td>商品列表增加分页（20 条/页）；商品名称字号缩小 2 号</td>
+</tr>
+<tr>
+<td>—</td>
+<td>2026-10-20</td>
+<td>新增「结束结算」弹窗（预填当天）、「批量导入」弹窗（上传 + 模板下载）</td>
+</tr>
+<tr>
+<td>—</td>
+<td>2026-10-20</td>
+<td>侧栏新增「特殊品牌结算」「祈飞达播结算」；前两轮误做成页面，改为置灰「待开发」不可点击</td>
+</tr>
+<tr>
+<td>—</td>
+<td>2026-10-20</td>
+<td>达播结算 demo：达人抖音号搜索、商品 ID 匹配、佣金率默认取店铺档案</td>
+</tr>
+<tr>
+<td>—</td>
+<td>2026-10-20</td>
+<td>达播列表重构：去掉粉丝数、起止时间拆两列、结束时间必填、操作改为「编辑合作信息」「编辑带货商品」</td>
+</tr>
+<tr>
+<td>—</td>
+<td>2026-10-20</td>
+<td>展开改 icon、商品数去单位、合并商品信息列、商品 ID 后加复制、佣金率统一命名并左移</td>
+</tr>
+<tr>
+<td>—</td>
+<td>2026-10-20</td>
+<td>抖音号支持复制；商品维护页商品 ID 支持复制；删除输入框下全部提示语</td>
+</tr>
+<tr>
+<td>—</td>
+<td>2026-10-20</td>
+<td>两个菜单商品图尺寸统一（58×58）；新增/编辑/结束结算弹窗顶部展示商品信息卡 + 重新选择；「商品上架日期（抖店读取）」改名「上架时间」</td>
+</tr>
+<tr>
+<td>—</td>
+<td>2026-10-20</td>
+<td>全站日期展示改为 <code>YYYY.MM.DD</code>；空输入框/空日期占位文本改为灰色</td>
+</tr>
+<tr>
+<td>v2.5</td>
+<td>2026-10-20</td>
+<td>达人编辑入口合并：列表操作改为单个「编辑」，弹窗「编辑达人带货」同时维护结算日期与带货商品（原两个弹窗合并）</td>
+</tr>
+<tr>
+<td>v2.6</td>
+<td>2026-10-20</td>
+<td>菜单「祈飞达播结算」更名为「祈飞达播结算维护」，并上移到侧栏第 2 位（特殊品牌结算、店铺档案顺延）</td>
+</tr>
+<tr>
+<td>v2.7</td>
+<td>2026-10-20</td>
+<td>带货商品清单行的「移除」文字按钮改为垃圾桶 icon 按钮（28×28，hover 浅红底 + 红图标，带「移除」tooltip）</td>
+</tr>
+<tr>
+<td>v2.8</td>
+<td>2026-10-20</td>
+<td>全局提示 toast 位置由右上角改为页面水平居中（左右居中、距顶 72px）</td>
+</tr>
+<tr>
+<td>v2.9</td>
+<td>2026-10-20</td>
+<td>左侧菜单改为浅色主题（白底 + 右侧分隔线），选中态由「蓝底白字」改为「浅蓝底 + 蓝字」，hover / 禁用 / 分组标题 / 待开发角标配色同步调整</td>
+</tr>
+<tr>
+<td>v2.10</td>
+<td>2026-10-20</td>
+<td>带货商品「移除」icon 由垃圾桶改为叉号 <code>×</code>（14×14 描边，线条加粗到 1.6）</td>
+</tr>
+<tr>
+<td>v2.4</td>
+<td>2026-10-20</td>
+<td>编辑带货商品弹窗改为与新增达人带货一致的交互（达人卡 + 灰底面板 + 批量导入/手动添加页签 + 搜索选择式清单，含序号与佣金率标签）</td>
+</tr>
+<tr>
+<td>v2.3</td>
+<td>2026-10-20</td>
+<td>两个列表的「结算开始时间 / 结算结束时间」合并为「结算时间」列，展示为 <code>2026.10.01～永久</code></td>
+</tr>
+<tr>
+<td>v2.2</td>
+<td>2026-10-20</td>
+<td>达播展开子表列对齐主表：商品信息左对齐达人信息（含展开列缩进）、佣金率列对齐主表佣金率列，列宽随主表动态计算</td>
+</tr>
+<tr>
+<td>v2.1</td>
+<td>2026-10-20</td>
+<td>新增达人带货的已选商品行、编辑带货商品的已带货商品行，行首增加序号（删除后自动重排）</td>
+</tr>
+<tr>
+<td>v2.0</td>
+<td>2026-10-20</td>
+<td>浅灰底色范围修正为「页签内容区」（上传框/清单区域），标题与页签行保持白底</td>
+</tr>
+</tbody>
+</table>
+</article>
+</body>
+</html>

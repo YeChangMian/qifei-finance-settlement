@@ -11,6 +11,7 @@
 | --- | --- |
 | 原型入口页 | https://yechangmian.github.io/qifei-finance-settlement/ |
 | 直接打开原型 | https://yechangmian.github.io/qifei-finance-settlement/qifei-settlement-demo.html |
+| 需求文档 PRD（在线阅读） | https://yechangmian.github.io/qifei-finance-settlement/qifei-settlement-prd.html |
 | 源码仓库 | https://github.com/YeChangMian/qifei-finance-settlement |
 
 在线预览由 GitHub Pages 提供（源：`main` 分支根目录）。原型为单文件、无外部依赖，打开即用。
@@ -20,7 +21,9 @@
 | 文件 | 说明 |
 | --- | --- |
 | `qifei-settlement-demo.html` | 单文件可交互原型（内联 CSS / JS / 图片，双击即可在浏览器打开，无需构建、无外部依赖） |
-| `qifei-settlement-prd.md` | 产品需求文档，与原型严格同步维护 |
+| `qifei-settlement-prd.md` | 产品需求文档源文件（Markdown），与原型严格同步维护 |
+| `qifei-settlement-prd.html` | PRD 的渲染版（由 `.md` 自动生成，带排版，可在 GitHub Pages 直接阅读，避免 `.md` 以原文展示） |
+| `build_prd_html.py` | 把 `qifei-settlement-prd.md` 转成 `qifei-settlement-prd.html` 的脚本 |
 | `qifei-qa.py` | 自动 QA 脚本：headless Chrome 跑 31 个场景（结构检查 + 运行时异常检查 + 截图） |
 
 ## 菜单结构

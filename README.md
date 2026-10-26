@@ -5,6 +5,16 @@
 - 对外版本：**v1.0**（2026-10-23 定版）
 - 对应原型内部迭代 v1.28.4，逐版本迭代过程见 `qifei-settlement-prd.md` 文末「变更记录」
 
+## 在线预览
+
+| 入口 | 链接 |
+| --- | --- |
+| 原型入口页 | https://yechangmian.github.io/qifei-finance-settlement/ |
+| 直接打开原型 | https://yechangmian.github.io/qifei-finance-settlement/qifei-settlement-demo.html |
+| 源码仓库 | https://github.com/YeChangMian/qifei-finance-settlement |
+
+在线预览由 GitHub Pages 提供（源：`main` 分支根目录）。原型为单文件、无外部依赖，打开即用。
+
 ## 文件说明
 
 | 文件 | 说明 |
